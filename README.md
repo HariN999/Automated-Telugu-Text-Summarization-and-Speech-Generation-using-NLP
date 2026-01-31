@@ -1,4 +1,4 @@
-```md
+
 # 📰 Automated Telugu News Summarization & Speech Generation using NLP
 
 An end-to-end AI system that automatically summarizes Telugu news articles and converts the summaries into natural-sounding speech.  
