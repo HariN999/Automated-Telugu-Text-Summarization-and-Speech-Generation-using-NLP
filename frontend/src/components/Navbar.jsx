@@ -1,16 +1,13 @@
 import { NavLink } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Radio, Link2, FileText, Mic2, Sun, Moon } from "lucide-react";
-import { useTheme } from "../context/ThemeContext";
+import { Radio, Link2, FileText, Mic2 } from "lucide-react";
 
 function Navbar() {
-  const { theme, toggleTheme } = useTheme();
-
   const navItems = [
     { path: "/", label: "Home", icon: Radio },
     { path: "/speak", label: "Speak", icon: Mic2 },
-    { path: "/paste-url", label: "URL", icon: Link2 },
-    { path: "/paste-text", label: "Summarize", icon: FileText },
+    { path: "/url", label: "URL", icon: Link2 },
+    { path: "/summarize", label: "Summarize", icon: FileText },
   ];
 
   return (
@@ -76,20 +73,7 @@ function Navbar() {
             ))}
           </nav>
 
-          {/* Theme Toggle */}
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={toggleTheme}
-            className="ml-4 flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 bg-slate-100 text-slate-600 transition-colors hover:bg-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-400 dark:hover:bg-slate-700"
-            aria-label="Toggle theme"
-          >
-            {theme === "dark" ? (
-              <Sun className="h-4 w-4" />
-            ) : (
-              <Moon className="h-4 w-4" />
-            )}
-          </motion.button>
+
         </div>
       </div>
     </motion.header>

@@ -60,7 +60,7 @@ function PasteUrl() {
         summary: response.summary,
         audioUrl: APIService.getAudioUrl(response.audioPath),
         originalUrl: response.originalUrl,
-        method: response.method,
+        method: response.method || selectedMethod,
       });
     } catch (err) {
       setError(err.message || "Failed to process URL. Please check the URL and try again.");
@@ -282,7 +282,7 @@ function PasteUrl() {
                 <div className="flex-1">
                   <div className="mb-2 flex items-center gap-2">
                     <span className="inline-block rounded-full bg-green-100 px-3 py-1 text-xs font-medium text-green-700 dark:bg-green-900/20 dark:text-green-400">
-                      ✓ Summarized with {result.method === "tfidf" ? "TF-IDF" : "IndicBART"}
+                      ✓ Summarized with {SUMMARIZATION_METHODS.find(m => m.id === (result.method || selectedMethod))?.name || "Unknown Method"}
                     </span>
                   </div>
                   <h3 className="mb-2 text-xl font-semibold text-slate-900 dark:text-slate-100">
