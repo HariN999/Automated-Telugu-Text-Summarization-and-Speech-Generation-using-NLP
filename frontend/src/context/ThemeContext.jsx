@@ -1,32 +1,58 @@
+import { createContext, useContext, useEffect, useState } from "react";
 
-import { createContext, useContext, useState, useEffect } from "react";
-
-const ThemeContext = createContext();
+const ThemeContext = createContext(undefined);
 
 export function ThemeProvider({ children }) {
-  // Initialize theme from localStorage or default to dark
-  const [theme, setTheme] = useState(() => {
-    const savedTheme = localStorage.getItem("theme");
-    return savedTheme || "dark";
-  });
+  // Initialize theme state
+  const [theme, setTheme] = useState("light");
+  const [mounted, setMounted] = useState(false);
 
-  // Update localStorage and document class when theme changes
+  // Load theme on mount
   useEffect(() => {
-    localStorage.setItem("theme", theme);
-    
-    if (theme === "dark") {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
+    try {
+      const savedTheme = localStorage.getItem("theme");
+      if (savedTheme === "dark" || savedTheme === "light") {
+        setTheme(savedTheme);
+      }
+    } catch (error) {
+      console.error("Error loading theme:", error);
     }
-  }, [theme]);
+    setMounted(true);
+  }, []);
+
+  // Apply theme changes
+  useEffect(() => {
+    if (!mounted) return;
+
+    const root = document.documentElement;
+    
+    try {
+      // Remove both classes
+      root.classList.remove("light", "dark");
+      
+      // Add current theme
+      root.classList.add(theme);
+      
+      // Save to localStorage
+      localStorage.setItem("theme", theme);
+    } catch (error) {
+      console.error("[Theme] Error applying theme:", error);
+    }
+  }, [theme, mounted]);
 
   const toggleTheme = () => {
-    setTheme((prev) => (prev === "dark" ? "light" : "dark"));
-  };
+    setTheme((prev) => (prev === "light" ? "dark" : "light"));
+  }; 
+
+  // Prevent flash of unstyled content
+  if (!mounted) {
+    return null;
+  }
+
+  const value = { theme, toggleTheme };
 
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+    <ThemeContext.Provider value={value}>
       {children}
     </ThemeContext.Provider>
   );
@@ -34,8 +60,8 @@ export function ThemeProvider({ children }) {
 
 export function useTheme() {
   const context = useContext(ThemeContext);
-  if (!context) {
-    throw new Error("useTheme must be used within ThemeProvider");
+  if (context === undefined) {
+    throw new Error("useTheme must be used within a ThemeProvider");
   }
   return context;
 }
