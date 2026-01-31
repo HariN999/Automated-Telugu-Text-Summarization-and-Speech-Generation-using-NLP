@@ -1,0 +1,35 @@
+# ===== Python =====
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+env/
+venv/
+myenv/
+.venv/
+
+# ===== Node / React =====
+node_modules/
+dist/
+build/
+
+# ===== Vite =====
+.vite/
+
+# ===== OS =====
+.DS_Store
+Thumbs.db
+
+# ===== Logs =====
+*.log
+
+# ===== Environment Variables =====
+.env
+.env.local
+
+# ===== IDE =====
+.vscode/
+.idea/
+
+# ===== Dataset (optional) =====
+backend/data/
