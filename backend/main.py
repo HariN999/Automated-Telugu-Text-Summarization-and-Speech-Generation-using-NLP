@@ -1,8 +1,8 @@
 import streamlit as st
-from extraction import extract_text_from_url
-from cleaning import clean_telugu_text
-from tfidf_summarizer import tfidf_summary
-from indicbart_summarizer import generate_summary
+from extraction import extract_text
+from cleaning import clean_text
+from tfidf_summarizer import tfidf_summarize
+from indicbart_summarizer import indicbart_summarize
 from tts import text_to_speech
 from rouge_eval import evaluate_rouge
 import os
@@ -21,16 +21,16 @@ if st.button("Generate Summary"):
         with st.spinner("Processing..."):
 
             # Extraction
-            raw_text = extract_text_from_url(url)
+            raw_text = extract_text(url)
 
             # Cleaning
-            cleaned_text = clean_telugu_text(raw_text)
+            cleaned_text = clean_text(raw_text)
 
             # TF-IDF Summary
-            tfidf_sum = tfidf_summary(cleaned_text)
+            tfidf_sum = tfidf_summarize(cleaned_text)
 
             # Abstractive Summary
-            abstractive_sum = generate_summary(cleaned_text)
+            abstractive_sum = indicbart_summarize(cleaned_text)
 
             # ROUGE
             scores = evaluate_rouge(tfidf_sum, abstractive_sum)
