@@ -1,58 +1,41 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from 'react';
 
-const ThemeContext = createContext(undefined);
+const ThemeContext = createContext();
 
 export function ThemeProvider({ children }) {
-  // Initialize theme state
-  const [theme, setTheme] = useState("light");
-  const [mounted, setMounted] = useState(false);
-
-  // Load theme on mount
-  useEffect(() => {
-    try {
-      const savedTheme = localStorage.getItem("theme");
-      if (savedTheme === "dark" || savedTheme === "light") {
-        setTheme(savedTheme);
-      }
-    } catch (error) {
-      console.error("Error loading theme:", error);
+  const [theme, setTheme] = useState(() => {
+    // Check localStorage first, then system preference
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+      return savedTheme;
     }
-    setMounted(true);
-  }, []);
-
-  // Apply theme changes
-  useEffect(() => {
-    if (!mounted) return;
-
-    const root = document.documentElement;
     
-    try {
-      // Remove both classes
-      root.classList.remove("light", "dark");
-      
-      // Add current theme
-      root.classList.add(theme);
-      
-      // Save to localStorage
-      localStorage.setItem("theme", theme);
-    } catch (error) {
-      console.error("[Theme] Error applying theme:", error);
+    // Check system preference
+    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      return 'dark';
     }
-  }, [theme, mounted]);
+    
+    return 'light';
+  });
+
+  useEffect(() => {
+    // Update localStorage
+    localStorage.setItem('theme', theme);
+    
+    // Update document class
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [theme]);
 
   const toggleTheme = () => {
-    setTheme((prev) => (prev === "light" ? "dark" : "light"));
-  }; 
-
-  // Prevent flash of unstyled content
-  if (!mounted) {
-    return null;
-  }
-
-  const value = { theme, toggleTheme };
+    setTheme(prev => prev === 'light' ? 'dark' : 'light');
+  };
 
   return (
-    <ThemeContext.Provider value={value}>
+    <ThemeContext.Provider value={{ theme, toggleTheme }}>
       {children}
     </ThemeContext.Provider>
   );
@@ -60,8 +43,8 @@ export function ThemeProvider({ children }) {
 
 export function useTheme() {
   const context = useContext(ThemeContext);
-  if (context === undefined) {
-    throw new Error("useTheme must be used within a ThemeProvider");
+  if (!context) {
+    throw new Error('useTheme must be used within ThemeProvider');
   }
   return context;
 }

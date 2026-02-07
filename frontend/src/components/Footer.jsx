@@ -1,6 +1,6 @@
 function Footer() {
   return (
-    <footer className="border-t border-slate-200 bg-white/80 backdrop-blur-sm dark:border-slate-700 dark:bg-slate-900/80">
+    <footer className="border-t border-slate-200 bg-slate-100/80 backdrop-blur-sm dark:border-slate-700 dark:bg-slate-900/80">
       <div className="mx-auto max-w-6xl px-6 py-8">
 
         {/* Project Title */}
