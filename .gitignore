@@ -1,4 +1,6 @@
-# ===== Python =====
+# =========================
+# Python
+# =========================
 __pycache__/
 *.pyc
 *.pyo
@@ -8,28 +10,52 @@ venv/
 myenv/
 .venv/
 
-# ===== Node / React =====
+# =========================
+# AI Models & Data (IMPORTANT)
+# =========================
+backend/model/
+backend/data/
+*.bin
+*.pt
+*.safetensors
+
+# =========================
+# Node / React
+# =========================
 node_modules/
 dist/
 build/
 
-# ===== Vite =====
+# =========================
+# Vite
+# =========================
 .vite/
 
-# ===== OS =====
-.DS_Store
-Thumbs.db
-
-# ===== Logs =====
+# =========================
+# Logs
+# =========================
 *.log
 
-# ===== Environment Variables =====
+# =========================
+# Environment Variables
+# =========================
 .env
 .env.local
 
-# ===== IDE =====
+# =========================
+# OS Files
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# IDE
+# =========================
 .vscode/
 .idea/
 
-# ===== Dataset (optional) =====
-backend/data/
+# =========================
+# Testing / Cache
+# =========================
+.pytest_cache/
+coverage/

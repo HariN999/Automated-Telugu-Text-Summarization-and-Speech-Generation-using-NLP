@@ -13,25 +13,16 @@ const SUMMARIZATION_METHODS = [
   {
     id: "tfidf",
     name: "TF-IDF",
-    description: "Fast extractive summarization using statistical analysis",
     badge: "⚡ Fast",
-    color: "blue",
-    speed: "~1 second",
-    quality: "Good",
     type: "Extractive",
   },
   {
-    id: "indicbart",
-    name: "IndicBART",
-    description: "High-quality abstractive summarization using AI model",
+    id: "mt5",
+    name: "mT5 ",
     badge: "🤖 AI-Powered",
-    color: "purple",
-    speed: "~3-5 seconds",
-    quality: "Excellent",
     type: "Abstractive",
   },
 ];
-
 function TextSummarize() {
   const [inputText, setInputText] = useState("");
   const [summary, setSummary] = useState("");
@@ -66,25 +57,26 @@ function TextSummarize() {
     setAudioUrl("");
 
     try {
-      const result = await APIService.summarizeText(inputText, selectedMethod);
-      
-      if (!result.success) {
-        throw new Error(result.error);
-      }
-      
-      setProcessingStatus("Summary generated successfully!");
-      setSummary(result.summary);
-      
-      // Set audio URL if available
-      if (result.audioPath) {
-        setAudioUrl(APIService.getAudioUrl(result.audioPath));
-      }
-      
-      setTimeout(() => setProcessingStatus(""), 2000);
-    } catch (err) {
-      setError(err.message || "An error occurred while processing your request");
-      console.error("Error:", err);
-    } finally {
+  const result = await APIService.summarizeText(inputText, selectedMethod);
+
+  // ✅ Backend already throws errors via HTTPException
+  // No "success" field exists
+
+  setProcessingStatus("Summary generated successfully!");
+  setSummary(result.summary);
+
+  // ✅ Backend returns audio_url (snake_case)
+  if (result.audio_url) {
+    setAudioUrl(APIService.getAudioUrl(result.audio_url));
+  }
+
+  setTimeout(() => setProcessingStatus(""), 2000);
+
+} catch (err) {
+  setError(err.message || "An error occurred while processing your request");
+  console.error("Error:", err);
+}
+ finally {
       setIsProcessing(false);
     }
   };

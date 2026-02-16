@@ -1,9 +1,9 @@
-import { Routes, Route } from "react-router-dom";
-import AppLayout from "./layout/AppLayout";
-import Home from "./pages/home";
-import Speak from "./pages/Speak";
-import PasteUrl from "./pages/PasteUrl";
-import TextSummarize from "./pages/TextSummarize";
+import { Routes, Route } from 'react-router-dom';
+import AppLayout from './layout/AppLayout';
+import Home from './pages/Home';
+import TextSummarize from './pages/TextSummarize';
+import PasteUrl from './pages/PasteUrl';
+import Speak from './pages/Speak';
 
 function App() {
   return (

@@ -1,6 +1,16 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Link2, Loader2, CheckCircle2, AlertCircle, Play, Download, Copy, ExternalLink, ChevronDown } from "lucide-react";
+import {
+  Link2,
+  Loader2,
+  CheckCircle2,
+  AlertCircle,
+  Play,
+  Download,
+  Copy,
+  ExternalLink,
+  ChevronDown,
+} from "lucide-react";
 import APIService from "../services/api";
 
 const SUMMARIZATION_METHODS = [
@@ -11,10 +21,10 @@ const SUMMARIZATION_METHODS = [
     description: "Quick extractive summarization",
   },
   {
-    id: "indicbart",
-    name: "IndicBART",
+  id: "mt5",
+  name: "mT5",
     badge: "🤖 AI-Powered",
-    description: "High-quality AI summarization",
+    description: "High-quality AI summarization using mT5 model",
   },
 ];
 
@@ -28,7 +38,9 @@ function PasteUrl() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [copied, setCopied] = useState(false);
 
-  const currentMethod = SUMMARIZATION_METHODS.find(m => m.id === selectedMethod);
+  const currentMethod = SUMMARIZATION_METHODS.find(
+    (m) => m.id === selectedMethod,
+  );
 
   const handleFetchNews = async () => {
     if (!url.trim()) {
@@ -50,20 +62,23 @@ function PasteUrl() {
 
     try {
       const response = await APIService.processUrl(url, selectedMethod);
-      
-      if (!response.success) {
-        throw new Error(response.error);
-      }
+
+      // FastAPI already throws HTTP errors → no success field needed
 
       setResult({
-        title: response.title || "News Article",
+        title: "News Article",
         summary: response.summary,
-        audioUrl: APIService.getAudioUrl(response.audioPath),
-        originalUrl: response.originalUrl,
-        method: response.method || selectedMethod,
+        audioUrl: response.audio_url
+          ? APIService.getAudioUrl(response.audio_url)
+          : null,
+        originalUrl: url,
+        method: response.method,
       });
     } catch (err) {
-      setError(err.message || "Failed to process URL. Please check the URL and try again.");
+      setError(
+        err.message ||
+          "Failed to process URL. Please check the URL and try again.",
+      );
       console.error("Error:", err);
     } finally {
       setIsLoading(false);
@@ -143,7 +158,9 @@ function PasteUrl() {
                   {currentMethod.description}
                 </div>
               </div>
-              <ChevronDown className={`h-4 w-4 text-slate-500 transition-transform ${showMethodDropdown ? 'rotate-180' : ''}`} />
+              <ChevronDown
+                className={`h-4 w-4 text-slate-500 transition-transform ${showMethodDropdown ? "rotate-180" : ""}`}
+              />
             </button>
 
             <AnimatePresence>
@@ -162,7 +179,9 @@ function PasteUrl() {
                         setShowMethodDropdown(false);
                       }}
                       className={`w-full border-b border-slate-100 p-4 text-left transition-colors last:border-b-0 hover:bg-slate-50 dark:border-slate-700 dark:hover:bg-slate-700/50 ${
-                        selectedMethod === method.id ? 'bg-blue-50 dark:bg-blue-900/20' : ''
+                        selectedMethod === method.id
+                          ? "bg-blue-50 dark:bg-blue-900/20"
+                          : ""
                       }`}
                     >
                       <div className="flex items-center justify-between">
@@ -282,7 +301,8 @@ function PasteUrl() {
                 <div className="flex-1">
                   <div className="mb-2 flex items-center gap-2">
                     <span className="inline-block rounded-full bg-green-100 px-3 py-1 text-xs font-medium text-green-700 dark:bg-green-900/20 dark:text-green-400">
-                      ✓ Summarized with {SUMMARIZATION_METHODS.find(m => m.id === (result.method || selectedMethod))?.name || "Unknown Method"}
+                      ✓ Summarized with{" "}
+                      {result.method === "tfidf" ? "TF-IDF" : "mT5"}
                     </span>
                   </div>
                   <h3 className="mb-2 text-xl font-semibold text-slate-900 dark:text-slate-100">
@@ -313,8 +333,13 @@ function PasteUrl() {
 
               {/* Summary */}
               <div className="mb-6 rounded-xl border border-slate-200 bg-slate-50 p-6 dark:border-slate-700 dark:bg-slate-900">
-                <h4 className="mb-3 text-sm font-medium text-slate-600 dark:text-slate-400">Summary</h4>
-                <p className="leading-relaxed text-slate-900 dark:text-slate-100" dir="auto">
+                <h4 className="mb-3 text-sm font-medium text-slate-600 dark:text-slate-400">
+                  Summary
+                </h4>
+                <p
+                  className="leading-relaxed text-slate-900 dark:text-slate-100"
+                  dir="auto"
+                >
                   {result.summary}
                 </p>
               </div>
@@ -341,7 +366,9 @@ function PasteUrl() {
                       onClick={handlePlayAudio}
                       className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-green-500 to-emerald-600 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-green-500/30 transition-all hover:scale-105"
                     >
-                      <Play className={`h-4 w-4 ${isPlaying ? "animate-pulse" : ""}`} />
+                      <Play
+                        className={`h-4 w-4 ${isPlaying ? "animate-pulse" : ""}`}
+                      />
                       {isPlaying ? "Playing..." : "Play Audio"}
                     </button>
 
