@@ -17,10 +17,16 @@ MT5_BASE_MODEL = "csebuetnlp/mT5_multilingual_XLSum"
 MT5_FINETUNED_PATH = os.path.join(MODEL_DIR, "mt5-telugu-finetuned")
 
 # Summarization Settings
-MAX_INPUT_LENGTH = 2000
-SUMMARY_MAX_LENGTH = 128
-SUMMARY_MIN_LENGTH = 30
-TFIDF_NUM_SENTENCES = 3
+MAX_INPUT_LENGTH = 512
+SUMMARY_MAX_LENGTH = 180
+SUMMARY_MIN_LENGTH = 60
+TFIDF_NUM_SENTENCES = 4   # slightly increase coverage
+
+# Generation Settings (new section)
+NUM_BEAMS = 4
+LENGTH_PENALTY = 1.2
+NO_REPEAT_NGRAM = 3
+
 
 # TTS Settings
 TTS_LANGUAGE = "te"
