@@ -1,59 +1,69 @@
 """
 Main Pipeline Module
 Orchestrates the complete summarization workflow:
-Extract → Clean → Summarize → Text-to-Speech
+Extract -> Clean -> Summarize -> Text-to-Speech
 """
 
 from extract import extract_text
 from clean import clean_text
 from summarize_tfidf import tfidf_summarize
-from summarize_mt5 import mT5_summarize   # <-- FIXED IMPORT
+from summarize_mt5 import mT5_base_summarize, mT5_finetuned_summarize
 from tts import text_to_speech
 
 
 def run_pipeline(
     text_or_url: str,
     method: str = "tfidf",
-    generate_audio: bool = True
+    generate_audio: bool = True,
 ) -> dict:
     """
-    Run complete summarization pipeline
+    Run complete summarization pipeline.
+
+    Args:
+        text_or_url: Raw Telugu text or a URL to extract from.
+        method: One of 'tfidf', 'mt5_base', 'mt5_finetuned'.
+        generate_audio: Whether to run TTS on the summary.
+
+    Returns:
+        Dict with keys: original_text, summary, method, audio_path (full path or None).
     """
 
-    # Step 1: Extract text
+    # Step 1: Extract
     extracted_text = extract_text(text_or_url)
 
-    # Step 2: Clean text
+    # Step 2: Clean
     cleaned_text = clean_text(extracted_text)
-
     if not cleaned_text:
         raise ValueError("No valid text found after cleaning")
 
     # Step 3: Summarize
-    if method.lower() == "tfidf":
+    m = method.lower()
+    if m == "tfidf":
         summary = tfidf_summarize(cleaned_text)
-
-    elif method.lower() == "mt5":
-        summary = mT5_summarize(cleaned_text)   # <-- FIXED CALL
-
+    elif m == "mt5_base":
+        summary = mT5_base_summarize(cleaned_text)
+    elif m == "mt5_finetuned":
+        summary = mT5_finetuned_summarize(cleaned_text)
     else:
-        raise ValueError(f"Invalid method: {method}. Use 'tfidf' or 'mt5'")
+        raise ValueError(
+            f"Invalid method: {method!r}. Choose 'tfidf', 'mt5_base', or 'mt5_finetuned'."
+        )
 
-    # Step 4: Generate audio
+    # Step 4: TTS
     audio_path = None
     if generate_audio and summary:
-        audio_path = text_to_speech(summary)
+        audio_path = text_to_speech(summary)  # returns full path
 
     return {
         "original_text": cleaned_text,
         "summary": summary,
         "method": method,
-        "audio_path": audio_path
+        "audio_path": audio_path,
     }
 
 
 if __name__ == "__main__":
-    test_text = """తెలంగాణ రాష్ట్రంలో వ్యవసాయ రంగం అభివృద్ధికి ప్రభుత్వం కొత్త పథకాలు ప్రకటించింది."""
-
-    result = run_pipeline(test_text, method="tfidf", generate_audio=False)
-    print(result)
+    test_text = "తెలంగాణ రాష్ట్రంలో వ్యవసాయ రంగం అభివృద్ధికి ప్రభుత్వం కొత్త పథకాలు ప్రకటించింది."
+    for m in ("tfidf", "mt5_base", "mt5_finetuned"):
+        result = run_pipeline(test_text, method=m, generate_audio=False)
+        print(f"[{m}] {result['summary'][:80]}")

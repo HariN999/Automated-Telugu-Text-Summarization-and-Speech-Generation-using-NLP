@@ -1,15 +1,8 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  Link2,
-  Loader2,
-  CheckCircle2,
-  AlertCircle,
-  Play,
-  Download,
-  Copy,
-  ExternalLink,
-  ChevronDown,
+  Link2, Loader2, CheckCircle2, AlertCircle,
+  Play, Download, Copy, ExternalLink, ChevronDown,
 } from "lucide-react";
 import APIService from "../services/api";
 
@@ -18,15 +11,25 @@ const SUMMARIZATION_METHODS = [
     id: "tfidf",
     name: "TF-IDF",
     badge: "⚡ Fast",
-    description: "Quick extractive summarization",
+    description: "Picks the most important sentences directly from the article.",
   },
   {
-  id: "mt5",
-  name: "mT5",
-    badge: "🤖 AI-Powered",
-    description: "High-quality AI summarization using mT5 model",
+    id: "mt5_base",
+    name: "mT5 Base",
+    badge: "🤖 AI",
+    description: "Generates fluent summaries using the multilingual XLSum base model.",
+  },
+  {
+    id: "mt5_finetuned",
+    name: "mT5 Fine-tuned",
+    badge: "✨ Best",
+    description: "Highest quality — mT5 fine-tuned specifically on Telugu news.",
   },
 ];
+
+/** Human-readable label for a method id */
+const methodLabel = (id) =>
+  SUMMARIZATION_METHODS.find((m) => m.id === id)?.name ?? id;
 
 function PasteUrl() {
   const [url, setUrl] = useState("");
@@ -38,17 +41,13 @@ function PasteUrl() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [copied, setCopied] = useState(false);
 
-  const currentMethod = SUMMARIZATION_METHODS.find(
-    (m) => m.id === selectedMethod,
-  );
+  const currentMethod = SUMMARIZATION_METHODS.find((m) => m.id === selectedMethod);
 
   const handleFetchNews = async () => {
     if (!url.trim()) {
       setError("Please enter a valid URL");
       return;
     }
-
-    // Basic URL validation
     try {
       new URL(url);
     } catch {
@@ -62,9 +61,6 @@ function PasteUrl() {
 
     try {
       const response = await APIService.processUrl(url, selectedMethod);
-
-      // FastAPI already throws HTTP errors → no success field needed
-
       setResult({
         title: "News Article",
         summary: response.summary,
@@ -75,10 +71,7 @@ function PasteUrl() {
         method: response.method,
       });
     } catch (err) {
-      setError(
-        err.message ||
-          "Failed to process URL. Please check the URL and try again.",
-      );
+      setError(err.message || "Failed to process URL. Please check the URL and try again.");
       console.error("Error:", err);
     } finally {
       setIsLoading(false);
@@ -116,6 +109,7 @@ function PasteUrl() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-slate-100 to-slate-200 px-6 py-12 dark:from-slate-950 dark:via-slate-900 dark:to-slate-800">
       <div className="mx-auto max-w-4xl">
+
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
@@ -133,7 +127,7 @@ function PasteUrl() {
           </p>
         </motion.div>
 
-        {/* Method Selection Dropdown */}
+        {/* Method Selector */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -170,6 +164,7 @@ function PasteUrl() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
                   className="absolute left-0 right-0 top-full z-10 mt-2 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-lg dark:border-slate-700 dark:bg-slate-800"
+                  style={{ minWidth: "280px" }}
                 >
                   {SUMMARIZATION_METHODS.map((method) => (
                     <button
@@ -190,16 +185,16 @@ function PasteUrl() {
                             <span className="font-medium text-slate-900 dark:text-slate-100">
                               {method.name}
                             </span>
-                            <span className="text-xs font-medium text-slate-600 dark:text-slate-400">
+                            <span className="text-xs font-medium text-slate-500 dark:text-slate-400">
                               {method.badge}
                             </span>
                           </div>
-                          <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">
+                          <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
                             {method.description}
                           </p>
                         </div>
                         {selectedMethod === method.id && (
-                          <CheckCircle2 className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                          <CheckCircle2 className="h-4 w-4 flex-shrink-0 text-blue-600 dark:text-blue-400" />
                         )}
                       </div>
                     </button>
@@ -210,7 +205,7 @@ function PasteUrl() {
           </div>
         </motion.div>
 
-        {/* Input Card */}
+        {/* URL Input */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -241,7 +236,6 @@ function PasteUrl() {
             <Link2 className="absolute right-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400 dark:text-slate-500" />
           </div>
 
-          {/* Error message */}
           <AnimatePresence>
             {error && (
               <motion.div
@@ -256,7 +250,6 @@ function PasteUrl() {
             )}
           </AnimatePresence>
 
-          {/* Buttons */}
           <div className="mt-6 flex gap-3">
             <button
               onClick={handleFetchNews}
@@ -296,13 +289,11 @@ function PasteUrl() {
               exit={{ opacity: 0, y: -20 }}
               className="rounded-2xl border border-slate-200 bg-white p-8 shadow-sm dark:border-slate-700 dark:bg-slate-800"
             >
-              {/* Title */}
               <div className="mb-6 flex items-start justify-between gap-4">
                 <div className="flex-1">
                   <div className="mb-2 flex items-center gap-2">
                     <span className="inline-block rounded-full bg-green-100 px-3 py-1 text-xs font-medium text-green-700 dark:bg-green-900/20 dark:text-green-400">
-                      ✓ Summarized with{" "}
-                      {result.method === "tfidf" ? "TF-IDF" : "mT5"}
+                      ✓ Summarized with {methodLabel(result.method)}
                     </span>
                   </div>
                   <h3 className="mb-2 text-xl font-semibold text-slate-900 dark:text-slate-100">
@@ -331,20 +322,15 @@ function PasteUrl() {
                 </button>
               </div>
 
-              {/* Summary */}
               <div className="mb-6 rounded-xl border border-slate-200 bg-slate-50 p-6 dark:border-slate-700 dark:bg-slate-900">
                 <h4 className="mb-3 text-sm font-medium text-slate-600 dark:text-slate-400">
                   Summary
                 </h4>
-                <p
-                  className="leading-relaxed text-slate-900 dark:text-slate-100"
-                  dir="auto"
-                >
+                <p className="leading-relaxed text-slate-900 dark:text-slate-100" dir="auto">
                   {result.summary}
                 </p>
               </div>
 
-              {/* Audio Controls */}
               {result.audioUrl && (
                 <div className="space-y-3">
                   <div className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400">
@@ -366,9 +352,7 @@ function PasteUrl() {
                       onClick={handlePlayAudio}
                       className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-green-500 to-emerald-600 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-green-500/30 transition-all hover:scale-105"
                     >
-                      <Play
-                        className={`h-4 w-4 ${isPlaying ? "animate-pulse" : ""}`}
-                      />
+                      <Play className={`h-4 w-4 ${isPlaying ? "animate-pulse" : ""}`} />
                       {isPlaying ? "Playing..." : "Play Audio"}
                     </button>
 

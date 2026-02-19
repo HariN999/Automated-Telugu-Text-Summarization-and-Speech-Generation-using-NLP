@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Sparkles, Loader2, FileText, Volume2, Download, Copy, CheckCircle2, ChevronDown } from "lucide-react";
+import {
+  Sparkles, Loader2, FileText, Volume2,
+  Download, Copy, CheckCircle2, ChevronDown,
+} from "lucide-react";
 import APIService from "../services/api";
 
 const SAMPLE_TEXTS = [
@@ -15,14 +18,28 @@ const SUMMARIZATION_METHODS = [
     name: "TF-IDF",
     badge: "⚡ Fast",
     type: "Extractive",
+    description: "Picks the most important sentences directly from the article.",
   },
   {
-    id: "mt5",
-    name: "mT5 ",
-    badge: "🤖 AI-Powered",
+    id: "mt5_base",
+    name: "mT5 Base",
+    badge: "🤖 AI",
     type: "Abstractive",
+    description: "Generates fluent summaries using the multilingual XLSum base model.",
+  },
+  {
+    id: "mt5_finetuned",
+    name: "mT5 Fine-tuned",
+    badge: "✨ Best",
+    type: "Abstractive",
+    description: "Highest quality — mT5 fine-tuned specifically on Telugu news.",
   },
 ];
+
+/** Human-readable label for a method id */
+const methodLabel = (id) =>
+  SUMMARIZATION_METHODS.find((m) => m.id === id)?.name ?? id;
+
 function TextSummarize() {
   const [inputText, setInputText] = useState("");
   const [summary, setSummary] = useState("");
@@ -33,8 +50,9 @@ function TextSummarize() {
   const [selectedMethod, setSelectedMethod] = useState("tfidf");
   const [showMethodDropdown, setShowMethodDropdown] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [usedMethod, setUsedMethod] = useState("");
 
-  const currentMethod = SUMMARIZATION_METHODS.find(m => m.id === selectedMethod);
+  const currentMethod = SUMMARIZATION_METHODS.find((m) => m.id === selectedMethod);
 
   const loadSampleText = () => {
     const randomIndex = Math.floor(Math.random() * SAMPLE_TEXTS.length);
@@ -42,6 +60,7 @@ function TextSummarize() {
     setSummary("");
     setAudioUrl("");
     setError("");
+    setUsedMethod("");
   };
 
   const handleSummarize = async () => {
@@ -55,28 +74,24 @@ function TextSummarize() {
     setError("");
     setSummary("");
     setAudioUrl("");
+    setUsedMethod("");
 
     try {
-  const result = await APIService.summarizeText(inputText, selectedMethod);
+      const result = await APIService.summarizeText(inputText, selectedMethod);
 
-  // ✅ Backend already throws errors via HTTPException
-  // No "success" field exists
+      setProcessingStatus("Summary generated successfully!");
+      setSummary(result.summary);
+      setUsedMethod(result.method);
 
-  setProcessingStatus("Summary generated successfully!");
-  setSummary(result.summary);
+      if (result.audio_url) {
+        setAudioUrl(APIService.getAudioUrl(result.audio_url));
+      }
 
-  // ✅ Backend returns audio_url (snake_case)
-  if (result.audio_url) {
-    setAudioUrl(APIService.getAudioUrl(result.audio_url));
-  }
-
-  setTimeout(() => setProcessingStatus(""), 2000);
-
-} catch (err) {
-  setError(err.message || "An error occurred while processing your request");
-  console.error("Error:", err);
-}
- finally {
+      setTimeout(() => setProcessingStatus(""), 2000);
+    } catch (err) {
+      setError(err.message || "An error occurred while processing your request");
+      console.error("Error:", err);
+    } finally {
       setIsProcessing(false);
     }
   };
@@ -87,6 +102,7 @@ function TextSummarize() {
     setAudioUrl("");
     setError("");
     setProcessingStatus("");
+    setUsedMethod("");
   };
 
   const copyToClipboard = async (text) => {
@@ -105,6 +121,7 @@ function TextSummarize() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-slate-100 to-slate-200 p-6 dark:from-slate-950 dark:via-slate-900 dark:to-slate-800">
       <div className="mx-auto max-w-7xl">
+
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
@@ -119,7 +136,7 @@ function TextSummarize() {
           </p>
         </motion.div>
 
-        {/* Method Selector Dropdown */}
+        {/* Method Selector */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -141,10 +158,12 @@ function TextSummarize() {
                   </span>
                 </div>
                 <div className="text-xs text-slate-500 dark:text-slate-500">
-                  {currentMethod.type} • {currentMethod.speed}
+                  {currentMethod.type}
                 </div>
               </div>
-              <ChevronDown className={`h-4 w-4 text-slate-500 transition-transform ${showMethodDropdown ? 'rotate-180' : ''}`} />
+              <ChevronDown
+                className={`h-4 w-4 text-slate-500 transition-transform ${showMethodDropdown ? "rotate-180" : ""}`}
+              />
             </button>
 
             <AnimatePresence>
@@ -154,6 +173,7 @@ function TextSummarize() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
                   className="absolute left-0 right-0 top-full z-10 mt-2 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-lg dark:border-slate-700 dark:bg-slate-800"
+                  style={{ minWidth: "260px" }}
                 >
                   {SUMMARIZATION_METHODS.map((method) => (
                     <button
@@ -163,7 +183,9 @@ function TextSummarize() {
                         setShowMethodDropdown(false);
                       }}
                       className={`w-full border-b border-slate-100 p-4 text-left transition-colors last:border-b-0 hover:bg-slate-50 dark:border-slate-700 dark:hover:bg-slate-700/50 ${
-                        selectedMethod === method.id ? 'bg-blue-50 dark:bg-blue-900/20' : ''
+                        selectedMethod === method.id
+                          ? "bg-blue-50 dark:bg-blue-900/20"
+                          : ""
                       }`}
                     >
                       <div className="flex items-center justify-between">
@@ -172,21 +194,19 @@ function TextSummarize() {
                             <span className="font-medium text-slate-900 dark:text-slate-100">
                               {method.name}
                             </span>
-                            <span className="text-xs font-medium text-slate-600 dark:text-slate-400">
+                            <span className="text-xs font-medium text-slate-500 dark:text-slate-400">
                               {method.badge}
                             </span>
                           </div>
-                          <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">
+                          <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
                             {method.description}
                           </p>
-                          <div className="mt-2 flex gap-4 text-xs text-slate-500 dark:text-slate-500">
-                            <span>Speed: {method.speed}</span>
-                            <span>Quality: {method.quality}</span>
-                            <span>Type: {method.type}</span>
-                          </div>
+                          <span className="mt-1 inline-block text-xs text-slate-400 dark:text-slate-500">
+                            {method.type}
+                          </span>
                         </div>
                         {selectedMethod === method.id && (
-                          <CheckCircle2 className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                          <CheckCircle2 className="h-4 w-4 flex-shrink-0 text-blue-600 dark:text-blue-400" />
                         )}
                       </div>
                     </button>
@@ -197,7 +217,9 @@ function TextSummarize() {
           </div>
         </motion.div>
 
-        <div className="grid gap-6 lg:grid-cols-2">
+        {/* Main Panels */}
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+
           {/* Input Panel */}
           <motion.div
             className="flex flex-col rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-800"
@@ -212,7 +234,6 @@ function TextSummarize() {
                   Input Text
                 </h3>
               </div>
-
               <button
                 onClick={loadSampleText}
                 disabled={isProcessing}
@@ -236,7 +257,6 @@ function TextSummarize() {
                 <span className="text-sm text-slate-600 dark:text-slate-400">
                   {charCount.toLocaleString()} characters
                 </span>
-
                 {isProcessing && processingStatus && (
                   <motion.span
                     initial={{ opacity: 0 }}
@@ -302,6 +322,12 @@ function TextSummarize() {
                 <h3 className="text-lg font-medium text-slate-900 dark:text-slate-100">
                   Summary
                 </h3>
+                {/* Badge showing which model was used */}
+                {usedMethod && (
+                  <span className="rounded-full bg-blue-100 px-2 py-0.5 text-xs font-medium text-blue-700 dark:bg-blue-900/30 dark:text-blue-300">
+                    {methodLabel(usedMethod)}
+                  </span>
+                )}
               </div>
               {summary && (
                 <button
@@ -329,7 +355,7 @@ function TextSummarize() {
                   <p className="leading-relaxed text-slate-900 dark:text-slate-100" dir="auto">
                     {summary}
                   </p>
-                  
+
                   {audioUrl && (
                     <motion.div
                       initial={{ opacity: 0, y: 10 }}
@@ -340,12 +366,7 @@ function TextSummarize() {
                         <Volume2 className="h-4 w-4" />
                         <span>Audio generated</span>
                       </div>
-                      <audio
-                        controls
-                        src={audioUrl}
-                        className="w-full"
-                        preload="metadata"
-                      >
+                      <audio controls src={audioUrl} className="w-full" preload="metadata">
                         Your browser does not support the audio element.
                       </audio>
                       <a
@@ -367,9 +388,7 @@ function TextSummarize() {
                       <p className="text-sm">Generating summary...</p>
                     </div>
                   ) : (
-                    <p className="text-sm">
-                      Your summary will appear here after processing
-                    </p>
+                    <p className="text-sm">Your summary will appear here after processing</p>
                   )}
                 </div>
               )}
