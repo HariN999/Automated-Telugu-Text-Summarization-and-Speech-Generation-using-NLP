@@ -120,7 +120,7 @@ function PasteUrl() {
   const resultMethod = SUMMARIZATION_METHODS.find((m) => m.id === result?.method);
 
   return (
-    <div className="min-h-screen px-6 py-12" style={{ backgroundColor: 'var(--bg-primary)' }}>
+    <div className="app-page">
       <div className="mx-auto max-w-3xl">
 
         {/* Header */}
@@ -132,10 +132,10 @@ function PasteUrl() {
           <div className="mb-3 inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-500 to-violet-600 shadow-lg shadow-indigo-500/30">
             <Link2 className="h-6 w-6 text-white" />
           </div>
-          <h1 className="mb-2 text-3xl font-bold" style={{ color: 'var(--text-primary)' }}>
+          <h1 className="mb-2 text-3xl font-bold text-[var(--text-primary)]">
             Fetch News from URL
           </h1>
-          <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>
+          <p className="text-sm text-[var(--text-secondary)]">
             Paste a news article link to summarize and generate audio
           </p>
         </motion.div>
@@ -162,7 +162,7 @@ function PasteUrl() {
                     {currentMethod.badge}
                   </span>
                 </div>
-                <div className="text-xs mt-0.5" style={{ color: 'var(--text-secondary)' }}>
+                <div className="mt-0.5 text-xs text-[var(--text-secondary)]">
                   {currentMethod.description}
                 </div>
               </div>
@@ -198,7 +198,7 @@ function PasteUrl() {
                               {method.badge}
                             </span>
                           </div>
-                          <p className="mt-0.5 text-xs leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
+                          <p className="mt-0.5 text-xs leading-relaxed text-[var(--text-secondary)]">
                             {method.description}
                           </p>
                         </div>
@@ -216,9 +216,9 @@ function PasteUrl() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="glass-card mb-6 rounded-2xl p-6"
+          className="app-card mb-6 rounded-2xl p-6"
         >
-          <label className="mb-3 block text-xs font-semibold uppercase tracking-widest" style={{ color: 'var(--text-secondary)' }}>
+          <label className="mb-3 block text-xs font-semibold uppercase tracking-widest text-[var(--text-secondary)]">
             News Article URL
           </label>
 
@@ -237,10 +237,9 @@ function PasteUrl() {
               }}
               placeholder="https://example.com/telugu-news-article"
               disabled={isLoading}
-              className="w-full rounded-xl border border-[var(--border-color)] bg-[var(--bg-secondary)] px-4 py-3.5 pr-12 text-sm placeholder:text-[var(--text-secondary)] focus:border-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-400/20 disabled:cursor-not-allowed disabled:opacity-50 transition-all"
-              style={{ color: 'var(--text-primary)' }}
+              className="app-input pr-12 text-sm disabled:cursor-not-allowed disabled:opacity-50"
             />
-            <Link2 className="absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2" style={{ color: 'var(--text-secondary)' }} />
+            <Link2 className="absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--text-secondary)]" />
           </div>
 
           <AnimatePresence>
@@ -261,7 +260,7 @@ function PasteUrl() {
             <button
               onClick={handleFetchNews}
               disabled={isLoading || !url.trim()}
-              className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-indigo-500 to-violet-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-indigo-500/25 transition-all hover:scale-105 hover:shadow-xl disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:scale-100"
+              className="app-button app-button-primary rounded-xl px-6 py-3 text-sm disabled:hover:scale-100"
             >
               {isLoading ? (
                 <>
@@ -279,8 +278,7 @@ function PasteUrl() {
             {url && !isLoading && (
               <button
                 onClick={handleClear}
-                className="rounded-xl border border-[var(--border-color)] bg-[var(--bg-secondary)] px-5 py-3 text-sm font-medium transition-all hover:border-red-300 dark:hover:border-red-500/40 hover:text-red-600 dark:hover:text-red-400"
-                style={{ color: 'var(--text-secondary)' }}
+                className="app-button app-button-secondary rounded-xl px-5 py-3 text-sm hover:border-red-300 hover:text-red-600 dark:hover:border-red-500/40 dark:hover:text-red-400"
               >
                 Clear
               </button>
@@ -295,7 +293,7 @@ function PasteUrl() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
-              className="glass-card flex flex-col items-center justify-center rounded-2xl p-14"
+              className="app-card flex flex-col items-center justify-center rounded-2xl p-14"
             >
               <div className="relative mb-6">
                 <div className="h-14 w-14 rounded-full bg-indigo-500/10 border-2 border-indigo-500/20 flex items-center justify-center">
@@ -303,10 +301,10 @@ function PasteUrl() {
                 </div>
                 <div className="absolute inset-0 rounded-full border-2 border-indigo-400/20 animate-ping-slow" />
               </div>
-              <p className="mb-1.5 text-base font-semibold" style={{ color: 'var(--text-primary)' }}>
+              <p className="mb-1.5 text-base font-semibold text-[var(--text-primary)]">
                 Processing your URL...
               </p>
-              <p className="text-center text-sm" style={{ color: 'var(--text-secondary)' }}>
+              <p className="text-center text-sm text-[var(--text-secondary)]">
                 Fetching article, extracting text, and generating summary
               </p>
             </motion.div>
@@ -320,7 +318,7 @@ function PasteUrl() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
-              className="glass-card rounded-2xl p-6"
+              className="app-card rounded-2xl p-6"
             >
               {/* Result header */}
               <div className="mb-5 flex items-start justify-between gap-4">
@@ -331,7 +329,7 @@ function PasteUrl() {
                       Summarized with {methodLabel(result.method)}
                     </span>
                   )}
-                  <h3 className="mb-2 text-lg font-semibold" style={{ color: 'var(--text-primary)' }}>
+                  <h3 className="mb-2 text-lg font-semibold text-[var(--text-primary)]">
                     {result.title}
                   </h3>
                   <a
@@ -346,8 +344,7 @@ function PasteUrl() {
                 </div>
                 <button
                   onClick={() => copyToClipboard(result.summary)}
-                  className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg border border-[var(--border-color)] bg-[var(--bg-secondary)] transition-all hover:border-indigo-300 dark:hover:border-indigo-500/40"
-                  style={{ color: 'var(--text-secondary)' }}
+                  className="app-button app-button-secondary flex h-9 w-9 flex-shrink-0 rounded-lg p-0"
                   title="Copy summary"
                 >
                   {copied ? (
@@ -360,10 +357,10 @@ function PasteUrl() {
 
               {/* Summary box */}
               <div className="mb-5 rounded-xl border border-[var(--border-color)] bg-[var(--bg-secondary)] p-5">
-                <p className="text-xs font-semibold uppercase tracking-widest mb-3" style={{ color: 'var(--text-secondary)' }}>
+                <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-[var(--text-secondary)]">
                   Summary
                 </p>
-                <p className="text-sm leading-relaxed" style={{ color: 'var(--text-primary)' }} dir="auto">
+                <p className="text-sm leading-relaxed text-[var(--text-primary)]" dir="auto">
                   {result.summary}
                 </p>
               </div>
@@ -388,7 +385,7 @@ function PasteUrl() {
                   <div className="flex flex-wrap gap-3">
                     <button
                       onClick={handlePlayAudio}
-                      className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-emerald-500/25 transition-all hover:scale-105"
+                      className="app-button rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-emerald-500/25 hover:scale-105"
                     >
                       {isPlaying ? (
                         <><Pause className="h-4 w-4" /> Playing...</>
@@ -400,8 +397,7 @@ function PasteUrl() {
                     <a
                       href={result.audioUrl}
                       download="summary_audio.mp3"
-                      className="inline-flex items-center gap-2 rounded-xl border border-[var(--border-color)] bg-[var(--bg-secondary)] px-5 py-2.5 text-sm font-medium transition-all hover:border-indigo-300 dark:hover:border-indigo-500/40"
-                      style={{ color: 'var(--text-secondary)' }}
+                      className="app-button app-button-secondary rounded-xl px-5 py-2.5 text-sm"
                     >
                       <Download className="h-4 w-4" />
                       Download

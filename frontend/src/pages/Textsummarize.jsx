@@ -126,7 +126,7 @@ function TextSummarize() {
   const usedMethodObj = SUMMARIZATION_METHODS.find((m) => m.id === usedMethod);
 
   return (
-    <div className="min-h-screen px-6 py-12" style={{ backgroundColor: 'var(--bg-primary)' }}>
+    <div className="app-page">
       <div className="mx-auto max-w-7xl">
 
         {/* Header */}
@@ -138,10 +138,10 @@ function TextSummarize() {
           <div className="mb-3 inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-500 to-violet-600 shadow-lg shadow-indigo-500/30">
             <Sparkles className="h-6 w-6 text-white" />
           </div>
-          <h1 className="mb-2 text-3xl font-bold" style={{ color: 'var(--text-primary)' }}>
+          <h1 className="mb-2 text-3xl font-bold text-[var(--text-primary)]">
             Telugu Text Summarization
           </h1>
-          <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>
+          <p className="text-sm text-[var(--text-secondary)]">
             Summarize Telugu text using AI-powered algorithms
           </p>
         </motion.div>
@@ -168,7 +168,7 @@ function TextSummarize() {
                     {currentMethod.badge}
                   </span>
                 </div>
-                <div className="text-xs mt-0.5" style={{ color: 'var(--text-secondary)' }}>
+                <div className="mt-0.5 text-xs text-[var(--text-secondary)]">
                   {currentMethod.type}
                 </div>
               </div>
@@ -206,7 +206,7 @@ function TextSummarize() {
                               {method.badge}
                             </span>
                           </div>
-                          <p className="mt-0.5 text-xs leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
+                          <p className="mt-0.5 text-xs leading-relaxed text-[var(--text-secondary)]">
                             {method.description}
                           </p>
                         </div>
@@ -224,7 +224,7 @@ function TextSummarize() {
 
           {/* Input Panel */}
           <motion.div
-            className="glass-card flex flex-col rounded-2xl p-6"
+            className="app-card flex flex-col rounded-2xl p-6"
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.45 }}
@@ -235,7 +235,7 @@ function TextSummarize() {
                 <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-50 dark:bg-indigo-500/10 border border-indigo-200 dark:border-indigo-500/20">
                   <FileText className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
                 </div>
-                <h3 className="text-sm font-semibold" style={{ color: 'var(--text-primary)' }}>
+                <h3 className="text-sm font-semibold text-[var(--text-primary)]">
                   Input Text
                 </h3>
               </div>
@@ -253,15 +253,14 @@ function TextSummarize() {
               onChange={(e) => setInputText(e.target.value)}
               placeholder="తెలుగు వచనం ఇక్కడ టైప్ చేయండి..."
               disabled={isProcessing}
-              className="min-h-[380px] flex-1 resize-none rounded-xl border border-[var(--border-color)] bg-[var(--bg-secondary)] p-4 font-sans text-sm leading-relaxed placeholder:text-[var(--text-secondary)] focus:border-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-400/20 disabled:cursor-not-allowed disabled:opacity-50 transition-all"
-              style={{ color: 'var(--text-primary)' }}
+              className="app-textarea min-h-[380px] flex-1 resize-none font-sans text-sm leading-relaxed disabled:cursor-not-allowed disabled:opacity-50"
               dir="auto"
             />
 
             {/* Footer row */}
             <div className="mt-4 flex items-center justify-between gap-3">
               <div className="flex flex-col gap-0.5">
-                <span className="text-xs font-mono" style={{ color: 'var(--text-secondary)' }}>
+                <span className="font-mono text-xs text-[var(--text-secondary)]">
                   {charCount.toLocaleString()} chars
                 </span>
                 <AnimatePresence>
@@ -283,8 +282,7 @@ function TextSummarize() {
                   <button
                     onClick={handleClear}
                     disabled={isProcessing}
-                    className="rounded-lg border border-[var(--border-color)] bg-[var(--bg-secondary)] px-4 py-2 text-xs font-medium transition-all hover:border-red-300 dark:hover:border-red-500/40 hover:text-red-600 dark:hover:text-red-400 disabled:cursor-not-allowed disabled:opacity-50"
-                    style={{ color: 'var(--text-secondary)' }}
+                    className="app-button app-button-secondary rounded-lg px-4 py-2 text-xs disabled:cursor-not-allowed disabled:opacity-50 hover:border-red-300 hover:text-red-600 dark:hover:border-red-500/40 dark:hover:text-red-400"
                   >
                     Clear
                   </button>
@@ -292,7 +290,7 @@ function TextSummarize() {
                 <button
                   onClick={handleSummarize}
                   disabled={isDisabled}
-                  className="inline-flex items-center gap-2 rounded-lg bg-gradient-to-r from-indigo-500 to-violet-600 px-5 py-2 text-xs font-semibold text-white shadow-md shadow-indigo-500/25 transition-all hover:scale-105 hover:shadow-lg hover:shadow-indigo-500/30 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:scale-100"
+                  className="app-button app-button-primary rounded-lg px-5 py-2 text-xs disabled:hover:scale-100"
                 >
                   {isProcessing ? (
                     <>
@@ -327,7 +325,7 @@ function TextSummarize() {
 
           {/* Output Panel */}
           <motion.div
-            className="glass-card flex flex-col rounded-2xl p-6"
+            className="app-card flex flex-col rounded-2xl p-6"
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.45 }}
@@ -338,7 +336,7 @@ function TextSummarize() {
                 <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-violet-50 dark:bg-violet-500/10 border border-violet-200 dark:border-violet-500/20">
                   <Sparkles className="h-4 w-4 text-violet-600 dark:text-violet-400" />
                 </div>
-                <h3 className="text-sm font-semibold" style={{ color: 'var(--text-primary)' }}>
+                <h3 className="text-sm font-semibold text-[var(--text-primary)]">
                   Summary
                 </h3>
                 {usedMethodObj && (
@@ -350,8 +348,7 @@ function TextSummarize() {
               {summary && (
                 <button
                   onClick={() => copyToClipboard(summary)}
-                  className="flex items-center gap-1.5 rounded-lg border border-[var(--border-color)] px-3 py-1.5 text-xs font-medium transition-all hover:border-indigo-300 dark:hover:border-indigo-500/40"
-                  style={{ color: 'var(--text-secondary)' }}
+                  className="app-button app-button-secondary rounded-lg px-3 py-1.5 text-xs"
                 >
                   {copied ? (
                     <>
@@ -371,7 +368,7 @@ function TextSummarize() {
             <div className="min-h-[380px] flex-1 rounded-xl border border-[var(--border-color)] bg-[var(--bg-secondary)] p-4">
               {summary ? (
                 <div className="space-y-4">
-                  <p className="text-sm leading-relaxed" style={{ color: 'var(--text-primary)' }} dir="auto">
+                  <p className="text-sm leading-relaxed text-[var(--text-primary)]" dir="auto">
                     {summary}
                   </p>
 
@@ -408,16 +405,16 @@ function TextSummarize() {
                         <Loader2 className="h-8 w-8 animate-spin text-indigo-500" />
                         <div className="absolute inset-0 h-8 w-8 animate-ping-slow rounded-full border-2 border-indigo-400/30" />
                       </div>
-                      <p className="text-xs font-medium" style={{ color: 'var(--text-secondary)' }}>
+                      <p className="text-xs font-medium text-[var(--text-secondary)]">
                         Generating summary...
                       </p>
                     </div>
                   ) : (
                     <div className="text-center">
                       <div className="mb-3 inline-flex h-10 w-10 items-center justify-center rounded-full border border-[var(--border-color)]">
-                        <Sparkles className="h-4 w-4" style={{ color: 'var(--text-secondary)' }} />
+                        <Sparkles className="h-4 w-4 text-[var(--text-secondary)]" />
                       </div>
-                      <p className="text-xs" style={{ color: 'var(--text-secondary)' }}>
+                      <p className="text-xs text-[var(--text-secondary)]">
                         Your summary will appear here after processing
                       </p>
                     </div>

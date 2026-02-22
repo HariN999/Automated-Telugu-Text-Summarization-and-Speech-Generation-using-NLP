@@ -20,9 +20,8 @@ function Navbar() {
       transition={{ type: "spring", stiffness: 120, damping: 22 }}
       className="sticky top-0 z-50"
     >
-      {/* Glass bar */}
-      <div className="border-b border-[var(--border-color)] bg-[var(--bg-primary)]/80 backdrop-blur-xl">
-        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
+      <div className="border-b border-[var(--border)] bg-[var(--background)]/80 backdrop-blur-xl transition-colors">
+        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-3 px-4 sm:px-6">
 
           {/* Logo — icon and text vertically centred on the same baseline */}
           <motion.div
@@ -39,22 +38,15 @@ function Navbar() {
 
             {/* Brand text — title + subtitle stacked and centred against the icon */}
             <div className="flex flex-col justify-center gap-0.5">
-              <span
-                className="text-[15px] font-semibold leading-none tracking-tight"
-                style={{ color: 'var(--text-primary)' }}
-              >
+              <span className="text-[15px] font-semibold leading-none tracking-tight text-[var(--text-primary)]">
                 Telugu AI
               </span>
-              <span
-                className="text-[11px] font-medium leading-none tracking-wider uppercase"
-                style={{ color: 'var(--text-secondary)' }}
-              >
+              <span className="text-[10px] font-medium leading-none tracking-wider uppercase text-[var(--text-secondary)] sm:text-[11px]">
                 Summarizer &amp; Speech
               </span>
             </div>
           </motion.div>
 
-          {/* Right: Nav + divider + theme toggle — all on one consistent baseline */}
           <div className="flex items-center gap-1">
 
             {/* Navigation links */}
@@ -64,7 +56,7 @@ function Navbar() {
                   key={item.path}
                   to={item.path}
                   className={({ isActive }) =>
-                    `relative flex items-center gap-1.5 rounded-lg px-3.5 py-2 text-sm font-medium transition-all duration-200 ${
+                    `relative flex items-center gap-1.5 rounded-lg px-2.5 py-2 text-sm font-medium transition-all duration-200 sm:px-3.5 ${
                       isActive
                         ? "text-indigo-600 dark:text-indigo-400"
                         : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
@@ -80,13 +72,13 @@ function Navbar() {
                         className="relative z-10 flex items-center gap-1.5"
                       >
                         <item.icon className="h-[15px] w-[15px] flex-shrink-0" />
-                        <span className="hidden sm:inline">{item.label}</span>
+                        <span className="hidden md:inline">{item.label}</span>
                       </motion.div>
 
                       {isActive && (
                         <motion.div
                           layoutId="nav-pill"
-                          className="absolute inset-0 rounded-lg bg-indigo-50 dark:bg-indigo-500/10 border border-indigo-200/60 dark:border-indigo-500/20"
+                          className="absolute inset-0 rounded-lg border border-indigo-200/70 bg-indigo-50 dark:border-indigo-500/25 dark:bg-indigo-500/10"
                           transition={{ type: "spring", stiffness: 350, damping: 32 }}
                         />
                       )}
@@ -96,15 +88,14 @@ function Navbar() {
               ))}
             </nav>
 
-            {/* Divider — single consistent margin via the parent gap */}
-            <div className="mx-3 h-5 w-px flex-shrink-0 bg-[var(--border-color)]" />
+            <div className="mx-2 hidden h-5 w-px flex-shrink-0 bg-[var(--border)] sm:block" />
 
-            {/* Theme toggle */}
             <motion.button
               onClick={toggleTheme}
               whileTap={{ scale: 0.9 }}
-              className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg border border-[var(--border-color)] bg-[var(--card-bg)] text-[var(--text-secondary)] transition-all hover:border-indigo-300 hover:text-[var(--text-primary)] dark:hover:border-indigo-500/40"
-              aria-label="Toggle theme"
+              className="app-button app-button-secondary flex h-9 w-9 flex-shrink-0 rounded-lg p-0"
+              aria-label={`Toggle theme (current: ${theme})`}
+              title={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
             >
               <motion.div
                 key={theme}
