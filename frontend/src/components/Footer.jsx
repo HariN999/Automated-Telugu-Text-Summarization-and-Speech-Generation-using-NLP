@@ -1,50 +1,42 @@
 function Footer() {
   return (
-    <footer className="border-t border-slate-200 bg-slate-100/80 backdrop-blur-sm dark:border-slate-700 dark:bg-slate-900/80">
-      <div className="mx-auto max-w-6xl px-6 py-8">
-
-        {/* Project Title */}
-        <h3 className="mb-2 text-center text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent dark:from-blue-400 dark:to-purple-400">
-          Telugu AI — Summarizer & Speech
+    <footer className="border-t border-[var(--border)] bg-[var(--surface-muted)] transition-colors duration-300">
+      <div className="mx-auto max-w-6xl px-6 py-10">
+        <h3 className="mb-3 text-center text-2xl font-bold gradient-text">
+          Telugu AI — Summarizer &amp; Speech
         </h3>
 
-        {/* Project Description */}
-        <p className="mb-6 text-center text-sm text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
-          Transform Telugu content into insights. Summarize articles, generate speech, and extract meaning with state-of-the-art language AI.
+        <p className="app-subtle mx-auto mb-6 max-w-2xl text-center text-sm leading-relaxed">
+          Transform Telugu content into insights. Summarize articles, generate speech,
+          and extract meaning with state-of-the-art language AI.
         </p>
 
-        {/* Divider */}
-        <div className="my-6 h-px bg-slate-200 dark:bg-slate-700" />
+        <div className="my-6 h-px bg-[var(--border)]" />
 
-        {/* Team Title */}
-        <h4 className="mb-4 text-center text-lg font-semibold text-slate-900 dark:text-white">
+        <h4 className="mb-4 text-center text-base font-semibold text-[var(--text-primary)]">
           Project Team
         </h4>
 
-        {/* Team Members */}
-        <div className="flex flex-wrap justify-center gap-6 text-slate-600 dark:text-slate-400">
-          <span className="hover:text-blue-600 dark:hover:text-blue-400 transition">
+        <div className="flex flex-wrap justify-center gap-5 text-sm text-[var(--text-secondary)]">
+          <span className="transition-colors hover:text-indigo-500">
             Hariharan Narlakanti
           </span>
-          <span className="hover:text-blue-600 dark:hover:text-blue-400 transition">
+          <span className="transition-colors hover:text-indigo-500">
             Vivek Nidumolu
           </span>
-          <span className="hover:text-blue-600 dark:hover:text-blue-400 transition">
+          <span className="transition-colors hover:text-indigo-500">
             Vishnu Vardhan Reddy Padala
           </span>
-          <span className="hover:text-blue-600 dark:hover:text-blue-400 transition">
+          <span className="transition-colors hover:text-indigo-500">
             Sanjeev Practur
           </span>
         </div>
 
-        {/* Divider */}
-        <div className="my-6 h-px bg-slate-200 dark:bg-slate-700" />
+        <div className="my-6 h-px bg-[var(--border)]" />
 
-        {/* Copyright */}
-        <p className="text-center text-sm text-slate-500 dark:text-slate-500">
-          © {new Date().getFullYear()} Telugu AI • All rights reserved
+        <p className="text-center text-sm text-[var(--text-secondary)]/80">
+          © {new Date().getFullYear()} Telugu AI · All rights reserved
         </p>
-
       </div>
     </footer>
   );
