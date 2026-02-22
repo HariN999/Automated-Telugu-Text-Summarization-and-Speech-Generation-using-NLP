@@ -2,6 +2,10 @@ import { motion } from "framer-motion";
 import { ArrowRight, Sparkles, Zap, Globe } from "lucide-react";
 import ArchStep from "../components/ArchStep";
 
+const MotionDiv = motion.div;
+const MotionH1 = motion.h1;
+const MotionP = motion.p;
+
 const HOME_FEATURES = [
   {
     icon: Globe,
@@ -32,17 +36,17 @@ function HeroSection({ onGetStarted }) {
         <div className="noise-overlay" />
 
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          <motion.div
+          <MotionDiv
             animate={{ scale: [1, 1.15, 1], opacity: [0.4, 0.6, 0.4] }}
             transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
             className="absolute -left-48 -top-48 h-[500px] w-[500px] rounded-full bg-indigo-400/10 dark:bg-indigo-600/20 blur-[100px]"
           />
-          <motion.div
+          <MotionDiv
             animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
             transition={{ duration: 13, repeat: Infinity, ease: "easeInOut", delay: 2 }}
             className="absolute -bottom-48 -right-48 h-[500px] w-[500px] rounded-full bg-violet-400/10 dark:bg-violet-700/20 blur-[100px]"
           />
-          <motion.div
+          <MotionDiv
             animate={{ scale: [1, 1.1, 1], opacity: [0.2, 0.35, 0.2] }}
             transition={{ duration: 8, repeat: Infinity, ease: "easeInOut", delay: 4 }}
             className="absolute left-1/2 top-1/2 h-[300px] w-[300px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-fuchsia-400/10 dark:bg-fuchsia-600/15 blur-[80px]"
@@ -51,13 +55,13 @@ function HeroSection({ onGetStarted }) {
 
         <div className="home-grid-overlay absolute inset-0" />
 
-        <motion.div
+        <MotionDiv
           className="relative z-10 mx-auto max-w-5xl text-center"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
-          <motion.div
+          <MotionDiv
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.2 }}
@@ -65,9 +69,9 @@ function HeroSection({ onGetStarted }) {
           >
             <Sparkles className="h-3.5 w-3.5" />
             <span>Powered by mT5 &amp; TF-IDF</span>
-          </motion.div>
+          </MotionDiv>
 
-          <motion.h1
+          <MotionH1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3, duration: 0.7 }}
@@ -81,9 +85,9 @@ function HeroSection({ onGetStarted }) {
                 తెలుగు
               </span>
             </span>
-          </motion.h1>
+          </MotionH1>
 
-          <motion.p
+          <MotionP
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.45, duration: 0.6 }}
@@ -91,9 +95,9 @@ function HeroSection({ onGetStarted }) {
           >
             Transform Telugu content into insights. Summarize articles, generate
             speech, and extract meaning with state-of-the-art language AI.
-          </motion.p>
+          </MotionP>
 
-          <motion.div
+          <MotionDiv
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6 }}
@@ -114,16 +118,16 @@ function HeroSection({ onGetStarted }) {
               Learn More
               <Zap className="h-4 w-4" />
             </a>
-          </motion.div>
+          </MotionDiv>
 
-          <motion.div
+          <MotionDiv
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.75 }}
             className="grid grid-cols-1 gap-4 sm:grid-cols-3"
           >
             {HOME_FEATURES.map((feature, i) => (
-              <motion.div
+              <MotionDiv
                 key={feature.label}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -135,21 +139,21 @@ function HeroSection({ onGetStarted }) {
                 </div>
                 <div className="home-feature-title mb-1 text-base font-semibold">{feature.label}</div>
                 <div className="home-feature-desc text-sm leading-relaxed">{feature.desc}</div>
-              </motion.div>
+              </MotionDiv>
             ))}
-          </motion.div>
-        </motion.div>
+          </MotionDiv>
+        </MotionDiv>
       </section>
 
       {/* Architecture section keeps existing dark look, while light mode gets cleaner card contrast. */}
       <section id="learn-more" className="home-arch-section relative overflow-hidden px-6 py-28">
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          <motion.div
+          <MotionDiv
             animate={{ scale: [1, 1.2, 1], opacity: [0.15, 0.25, 0.15] }}
             transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
             className="absolute -right-32 -top-32 h-80 w-80 rounded-full bg-indigo-400/15 dark:bg-indigo-500/30 blur-[80px]"
           />
-          <motion.div
+          <MotionDiv
             animate={{ scale: [1, 1.25, 1], opacity: [0.1, 0.2, 0.1] }}
             transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
             className="absolute -bottom-32 -left-32 h-80 w-80 rounded-full bg-violet-400/10 dark:bg-violet-500/25 blur-[80px]"

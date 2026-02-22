@@ -2,9 +2,11 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Link2, Loader2, CheckCircle2, AlertCircle,
-  Play, Pause, Download, Copy, ExternalLink, ChevronDown,
+  Download, Copy, ExternalLink, ChevronDown,
 } from "lucide-react";
 import APIService from "../services/api";
+
+const MotionDiv = motion.div;
 
 const SUMMARIZATION_METHODS = [
   {
@@ -49,7 +51,6 @@ function PasteUrl() {
   const [error, setError] = useState("");
   const [selectedMethod, setSelectedMethod] = useState("tfidf");
   const [showMethodDropdown, setShowMethodDropdown] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(false);
   const [copied, setCopied] = useState(false);
 
   const currentMethod = SUMMARIZATION_METHODS.find((m) => m.id === selectedMethod);
@@ -75,9 +76,7 @@ function PasteUrl() {
       setResult({
         title: "News Article",
         summary: response.summary,
-        audioUrl: response.audio_url
-          ? APIService.getAudioUrl(response.audio_url)
-          : null,
+        audioUrl: response.audio_url || null,
         originalUrl: url,
         method: response.method,
       });
@@ -105,18 +104,6 @@ function PasteUrl() {
     }
   };
 
-  const handlePlayAudio = () => {
-    const audio = document.getElementById("summary-audio");
-    if (audio) {
-      if (isPlaying) {
-        audio.pause();
-      } else {
-        audio.play();
-      }
-      setIsPlaying(!isPlaying);
-    }
-  };
-
   const resultMethod = SUMMARIZATION_METHODS.find((m) => m.id === result?.method);
 
   return (
@@ -124,7 +111,7 @@ function PasteUrl() {
       <div className="mx-auto max-w-3xl">
 
         {/* Header */}
-        <motion.div
+        <MotionDiv
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           className="mb-10 text-center"
@@ -138,10 +125,10 @@ function PasteUrl() {
           <p className="text-sm text-[var(--text-secondary)]">
             Paste a news article link to summarize and generate audio
           </p>
-        </motion.div>
+        </MotionDiv>
 
         {/* Method Selector */}
-        <motion.div
+        <MotionDiv
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           className="mb-6 flex justify-center"
@@ -171,7 +158,7 @@ function PasteUrl() {
 
             <AnimatePresence>
               {showMethodDropdown && (
-                <motion.div
+                <MotionDiv
                   initial={{ opacity: 0, y: -8, scale: 0.97 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: -8, scale: 0.97 }}
@@ -205,14 +192,14 @@ function PasteUrl() {
                       </div>
                     </button>
                   ))}
-                </motion.div>
+                </MotionDiv>
               )}
             </AnimatePresence>
           </div>
-        </motion.div>
+        </MotionDiv>
 
         {/* URL Input Card */}
-        <motion.div
+        <MotionDiv
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
@@ -244,7 +231,7 @@ function PasteUrl() {
 
           <AnimatePresence>
             {error && (
-              <motion.div
+              <MotionDiv
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: "auto" }}
                 exit={{ opacity: 0, height: 0 }}
@@ -252,7 +239,7 @@ function PasteUrl() {
               >
                 <AlertCircle className="h-3.5 w-3.5 flex-shrink-0" />
                 {error}
-              </motion.div>
+              </MotionDiv>
             )}
           </AnimatePresence>
 
@@ -284,12 +271,12 @@ function PasteUrl() {
               </button>
             )}
           </div>
-        </motion.div>
+        </MotionDiv>
 
         {/* Loading State */}
         <AnimatePresence>
           {isLoading && !result && (
-            <motion.div
+            <MotionDiv
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
@@ -307,14 +294,14 @@ function PasteUrl() {
               <p className="text-center text-sm text-[var(--text-secondary)]">
                 Fetching article, extracting text, and generating summary
               </p>
-            </motion.div>
+            </MotionDiv>
           )}
         </AnimatePresence>
 
         {/* Result Card */}
         <AnimatePresence>
           {result && (
-            <motion.div
+            <MotionDiv
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
@@ -373,29 +360,13 @@ function PasteUrl() {
                     Audio generated successfully
                   </div>
 
-                  <audio
-                    id="summary-audio"
-                    src={result.audioUrl}
-                    className="hidden"
-                    onEnded={() => setIsPlaying(false)}
-                    onPlay={() => setIsPlaying(true)}
-                    onPause={() => setIsPlaying(false)}
-                  />
-
                   <div className="flex flex-wrap gap-3">
-                    <button
-                      onClick={handlePlayAudio}
-                      className="app-button rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-emerald-500/25 hover:scale-105"
-                    >
-                      {isPlaying ? (
-                        <><Pause className="h-4 w-4" /> Playing...</>
-                      ) : (
-                        <><Play className="h-4 w-4 ml-0.5" /> Play Audio</>
-                      )}
-                    </button>
+                    <audio controls className="w-full mt-3">
+                      <source src={`http://localhost:8000${result.audioUrl}`} type="audio/mpeg" />
+                    </audio>
 
                     <a
-                      href={result.audioUrl}
+                      href={APIService.getAudioUrl(result.audioUrl)}
                       download="summary_audio.mp3"
                       className="app-button app-button-secondary rounded-xl px-5 py-2.5 text-sm"
                     >
@@ -405,7 +376,7 @@ function PasteUrl() {
                   </div>
                 </div>
               )}
-            </motion.div>
+            </MotionDiv>
           )}
         </AnimatePresence>
       </div>

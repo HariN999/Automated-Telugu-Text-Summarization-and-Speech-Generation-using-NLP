@@ -9,6 +9,7 @@ env/
 venv/
 myenv/
 .venv/
+ myenv_coqui_backup/
 
 # =========================
 # AI Models & Data (IMPORTANT)

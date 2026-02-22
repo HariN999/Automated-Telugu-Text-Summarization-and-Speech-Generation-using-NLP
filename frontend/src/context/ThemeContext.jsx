@@ -1,7 +1,6 @@
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { THEME_STORAGE_KEY, THEME_TOKENS, resolveSystemTheme } from "../theme/tokens";
-
-const ThemeContext = createContext();
+import ThemeContext from "./themeContextValue";
 
 const isTheme = (value) => value === "light" || value === "dark";
 
@@ -93,12 +92,4 @@ export function ThemeProvider({ children }) {
   );
 
   return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
-}
-
-export function useTheme() {
-  const context = useContext(ThemeContext);
-  if (!context) {
-    throw new Error("useTheme must be used within ThemeProvider");
-  }
-  return context;
 }

@@ -1,7 +1,11 @@
 import { NavLink } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Radio, Link2, FileText, Mic2, Sun, Moon } from "lucide-react";
-import { useTheme } from "../context/ThemeContext";
+import useTheme from "../context/useTheme";
+
+const MotionHeader = motion.header;
+const MotionDiv = motion.div;
+const MotionButton = motion.button;
 
 function Navbar() {
   const { theme, toggleTheme } = useTheme();
@@ -14,7 +18,7 @@ function Navbar() {
   ];
 
   return (
-    <motion.header
+    <MotionHeader
       initial={{ y: -80, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ type: "spring", stiffness: 120, damping: 22 }}
@@ -24,7 +28,7 @@ function Navbar() {
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-3 px-4 sm:px-6">
 
           {/* Logo — icon and text vertically centred on the same baseline */}
-          <motion.div
+          <MotionDiv
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.15 }}
@@ -45,7 +49,7 @@ function Navbar() {
                 Summarizer &amp; Speech
               </span>
             </div>
-          </motion.div>
+          </MotionDiv>
 
           <div className="flex items-center gap-1">
 
@@ -65,7 +69,7 @@ function Navbar() {
                 >
                   {({ isActive }) => (
                     <>
-                      <motion.div
+                      <MotionDiv
                         initial={{ opacity: 0, y: -8 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.08 * index }}
@@ -73,10 +77,10 @@ function Navbar() {
                       >
                         <item.icon className="h-[15px] w-[15px] flex-shrink-0" />
                         <span className="hidden md:inline">{item.label}</span>
-                      </motion.div>
+                      </MotionDiv>
 
                       {isActive && (
-                        <motion.div
+                        <MotionDiv
                           layoutId="nav-pill"
                           className="absolute inset-0 rounded-lg border border-indigo-200/70 bg-indigo-50 dark:border-indigo-500/25 dark:bg-indigo-500/10"
                           transition={{ type: "spring", stiffness: 350, damping: 32 }}
@@ -90,14 +94,14 @@ function Navbar() {
 
             <div className="mx-2 hidden h-5 w-px flex-shrink-0 bg-[var(--border)] sm:block" />
 
-            <motion.button
+            <MotionButton
               onClick={toggleTheme}
               whileTap={{ scale: 0.9 }}
               className="app-button app-button-secondary flex h-9 w-9 flex-shrink-0 rounded-lg p-0"
               aria-label={`Toggle theme (current: ${theme})`}
               title={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
             >
-              <motion.div
+              <MotionDiv
                 key={theme}
                 initial={{ rotate: -90, opacity: 0 }}
                 animate={{ rotate: 0, opacity: 1 }}
@@ -108,13 +112,13 @@ function Navbar() {
                 ) : (
                   <Moon className="h-4 w-4" />
                 )}
-              </motion.div>
-            </motion.button>
+              </MotionDiv>
+            </MotionButton>
           </div>
 
         </div>
       </div>
-    </motion.header>
+    </MotionHeader>
   );
 }
 

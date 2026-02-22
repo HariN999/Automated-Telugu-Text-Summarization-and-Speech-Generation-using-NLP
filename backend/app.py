@@ -2,7 +2,7 @@
 Telugu News Summarization API
 FastAPI application for text summarization with TTS
 """
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
@@ -10,7 +10,9 @@ from pydantic import BaseModel, Field
 from typing import Optional, Literal
 import os
 
+from clean import clean_text
 from pipeline import run_pipeline
+from services.news_service import fetch_telugu_news
 
 
 app = FastAPI(
@@ -65,6 +67,23 @@ class SummarizeResponse(BaseModel):
 class ErrorResponse(BaseModel):
     detail: str = Field(..., description="Error message")
 
+class LatestNewsItem(BaseModel):
+    title: str = Field(..., description="News title")
+    summary: str = Field(..., description="AI summarized Telugu news")
+    method: str = Field(..., description="Summarization method used")
+    audio_url: Optional[str] = Field(None, description="URL to audio file")
+    # Speak frontend compatibility keys
+    headline: str = Field(..., description="Headline field used by Speak UI")
+    firstLine: str = Field(..., description="Short line field used by Speak UI")
+    brief: str = Field(..., description="Brief summary field used by Speak UI")
+    fullText: str = Field(..., description="Full text field used by Speak UI")
+    source: str = Field(..., description="News source")
+
+
+class LatestNewsResponse(BaseModel):
+    source: str = Field(..., description="News pipeline source")
+    news: list[LatestNewsItem] = Field(default_factory=list)
+
 
 # ============================================================================
 # Endpoints
@@ -92,6 +111,68 @@ def health_check():
             "tts": "ready",
         },
     }
+
+@app.get(
+    "/latest-news",
+    response_model=LatestNewsResponse,
+    responses={500: {"model": ErrorResponse}},
+    tags=["News"],
+)
+def latest_news(
+    language: str = Query(default="te", description="Language hint (currently Telugu feed)"),
+    limit: int = Query(default=5, ge=1, le=5, description="Max number of articles"),
+):
+    """
+    Fetch Telugu RSS articles and summarize them using the existing NLP pipeline.
+
+    Pipeline reuse:
+    fetch RSS -> clean text -> run_pipeline(method='mt5_finetuned', generate_audio=True)
+    """
+    try:
+        _ = language  # Kept for frontend compatibility.
+        raw_articles = fetch_telugu_news(limit=limit)
+        summarized_news: list[LatestNewsItem] = []
+
+        for article in raw_articles[:5]:
+            article_text = clean_text(article.get("text", ""))
+            if not article_text:
+                continue
+
+            result = run_pipeline(
+                text_or_url=article_text,
+                method="mt5_finetuned",
+                generate_audio=True,
+            )
+
+            summary = result.get("summary", "").strip()
+            title = article.get("title", "").strip() or "Telugu News"
+            source_name = article.get("source", "rss")
+            audio_url = None
+            if result.get("audio_path"):
+                filename = os.path.basename(result["audio_path"])
+                audio_url = f"/audio/{filename}"
+
+            if not summary:
+                continue
+
+            summarized_news.append(
+                LatestNewsItem(
+                    title=title,
+                    summary=summary,
+                    method="mt5_finetuned",
+                    audio_url=audio_url,
+                    # Speak frontend compatibility payload
+                    headline=title,
+                    firstLine=summary,
+                    brief=summary,
+                    fullText=summary,
+                    source=source_name,
+                )
+            )
+
+        return LatestNewsResponse(source="bbc_eenadu_pipeline", news=summarized_news)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to fetch latest news: {str(e)}")
 
 
 @app.post(
