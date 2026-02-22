@@ -1,6 +1,8 @@
 import { motion } from "framer-motion";
 import { Search, Filter, Brain, Volume2, Brush } from "lucide-react";
 
+const MotionDiv = motion.div;
+
 const ICONS = {
   search: Search,
   broom: Brush,
@@ -22,7 +24,7 @@ function ArchStep({ step, icon, title, desc, sectionId }) {
   const colors = STEP_COLORS[step] || STEP_COLORS["01"];
 
   return (
-    <motion.div
+    <MotionDiv
       id={sectionId}
       initial={{ opacity: 0, x: -16 }}
       whileInView={{ opacity: 1, x: 0 }}
@@ -54,7 +56,7 @@ function ArchStep({ step, icon, title, desc, sectionId }) {
 
       {/* Hover accent line */}
       <div className={`absolute left-0 top-4 bottom-4 w-0.5 rounded-full ${colors.dot} opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
-    </motion.div>
+    </MotionDiv>
   );
 }
 

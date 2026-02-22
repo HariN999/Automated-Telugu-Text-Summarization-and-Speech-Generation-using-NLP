@@ -6,6 +6,9 @@ import {
 } from "lucide-react";
 import APIService from "../services/api";
 
+const MotionDiv = motion.div;
+const MotionSpan = motion.span;
+
 const SAMPLE_TEXTS = [
   "తెలుగు భాష ద్రావిడ భాషల కుటుంబానికి చెందిన భాష. ఇది ఆంధ్రప్రదేశ్ మరియు తెలంగాణ రాష్ట్రాల అధికార భాష. తెలుగు భాష చాలా ప్రాచీనమైనది మరియు గొప్ప సాహిత్య సంప్రదాయం కలిగి ఉంది. దీనిని అమృతభాష అని కూడా పిలుస్తారు. తెలుగు భాషలో అనేక ప్రాచీన గ్రంథాలు, కావ్యాలు మరియు సాహిత్య రచనలు ఉన్నాయి. నన్నయ, తిక్కన, ఎర్రన వంటి మహా కవులు తెలుగు సాహిత్యానికి ఎనలేని సేవ చేశారు.",
   "భారతదేశం అనేక సంస్కృతులు మరియు సంప్రదాయాలకు నిలయం. ఈ దేశంలో వివిధ మతాలు, భాషలు మరియు కళలు సమృద్ధిగా ఉన్నాయి. భారతీయ నాగరికత ప్రపంచంలోనే అత్యంత ప్రాచీనమైనది. సింధూ నాగరికత నుండి నేటి ఆధునిక భారతదేశం వరకు ఈ దేశం అనేక మార్పులను చూసింది. భారతదేశ స్వాతంత్ర్య పోరాటం ప్రపంచానికే ఆదర్శంగా నిలిచింది.",
@@ -48,9 +51,6 @@ const SUMMARIZATION_METHODS = [
   },
 ];
 
-const methodLabel = (id) =>
-  SUMMARIZATION_METHODS.find((m) => m.id === id)?.name ?? id;
-
 function TextSummarize() {
   const [inputText, setInputText] = useState("");
   const [summary, setSummary] = useState("");
@@ -72,6 +72,7 @@ function TextSummarize() {
     setAudioUrl("");
     setError("");
     setUsedMethod("");
+    setCopied(false);
   };
 
   const handleSummarize = async () => {
@@ -91,7 +92,7 @@ function TextSummarize() {
       setSummary(result.summary);
       setUsedMethod(result.method);
       if (result.audio_url) {
-        setAudioUrl(APIService.getAudioUrl(result.audio_url));
+        setAudioUrl(result.audio_url);
       }
       setTimeout(() => setProcessingStatus(""), 2000);
     } catch (err) {
@@ -130,7 +131,7 @@ function TextSummarize() {
       <div className="mx-auto max-w-7xl">
 
         {/* Header */}
-        <motion.div
+        <MotionDiv
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           className="mb-10 text-center"
@@ -144,10 +145,10 @@ function TextSummarize() {
           <p className="text-sm text-[var(--text-secondary)]">
             Summarize Telugu text using AI-powered algorithms
           </p>
-        </motion.div>
+        </MotionDiv>
 
         {/* Method Selector */}
-        <motion.div
+        <MotionDiv
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           className="mb-8 flex justify-center"
@@ -179,7 +180,7 @@ function TextSummarize() {
 
             <AnimatePresence>
               {showMethodDropdown && (
-                <motion.div
+                <MotionDiv
                   initial={{ opacity: 0, y: -8, scale: 0.97 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: -8, scale: 0.97 }}
@@ -213,17 +214,17 @@ function TextSummarize() {
                       </div>
                     </button>
                   ))}
-                </motion.div>
+                </MotionDiv>
               )}
             </AnimatePresence>
           </div>
-        </motion.div>
+        </MotionDiv>
 
         {/* Main Panels */}
         <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
 
           {/* Input Panel */}
-          <motion.div
+          <MotionDiv
             className="app-card flex flex-col rounded-2xl p-6"
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -265,14 +266,14 @@ function TextSummarize() {
                 </span>
                 <AnimatePresence>
                   {isProcessing && processingStatus && (
-                    <motion.span
+                    <MotionSpan
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
                       className="text-xs text-indigo-600 dark:text-indigo-400"
                     >
                       {processingStatus}
-                    </motion.span>
+                    </MotionSpan>
                   )}
                 </AnimatePresence>
               </div>
@@ -310,7 +311,7 @@ function TextSummarize() {
             {/* Error */}
             <AnimatePresence>
               {error && (
-                <motion.div
+                <MotionDiv
                   initial={{ opacity: 0, height: 0 }}
                   animate={{ opacity: 1, height: "auto" }}
                   exit={{ opacity: 0, height: 0 }}
@@ -318,13 +319,13 @@ function TextSummarize() {
                 >
                   <AlertCircle className="h-3.5 w-3.5 flex-shrink-0" />
                   {error}
-                </motion.div>
+                </MotionDiv>
               )}
             </AnimatePresence>
-          </motion.div>
+          </MotionDiv>
 
           {/* Output Panel */}
-          <motion.div
+          <MotionDiv
             className="app-card flex flex-col rounded-2xl p-6"
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -373,7 +374,7 @@ function TextSummarize() {
                   </p>
 
                   {audioUrl && (
-                    <motion.div
+                    <MotionDiv
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       className="mt-4 rounded-xl border border-[var(--border-color)] bg-[var(--card-bg)] p-4 space-y-3"
@@ -383,18 +384,18 @@ function TextSummarize() {
                         <Volume2 className="h-3.5 w-3.5" />
                         Audio generated
                       </div>
-                      <audio controls src={audioUrl} className="w-full" preload="metadata">
-                        Your browser does not support the audio element.
+                      <audio controls className="mt-3 w-full">
+                        <source src={`http://localhost:8000${audioUrl}`} type="audio/mpeg" />
                       </audio>
                       <a
-                        href={audioUrl}
+                        href={APIService.getAudioUrl(audioUrl)}
                         download="summary_audio.mp3"
                         className="inline-flex items-center gap-1.5 text-xs font-medium text-indigo-600 dark:text-indigo-400 hover:underline"
                       >
                         <Download className="h-3.5 w-3.5" />
                         Download Audio
                       </a>
-                    </motion.div>
+                    </MotionDiv>
                   )}
                 </div>
               ) : (
@@ -422,7 +423,7 @@ function TextSummarize() {
                 </div>
               )}
             </div>
-          </motion.div>
+          </MotionDiv>
         </div>
       </div>
     </div>
