@@ -1,4 +1,4 @@
-📰 Automated Telugu Text Summarization and Speech Generation
+# 📰 Automated Telugu Text Summarization and Speech Generation
 
 Full-stack AI web application for **Telugu news understanding**, combining extractive and abstractive NLP with optional speech generation.
 
