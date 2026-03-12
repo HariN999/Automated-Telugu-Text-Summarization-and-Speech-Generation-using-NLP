@@ -21,7 +21,7 @@ This system enables users to input Telugu text or news URLs and receive concise 
 
 ## 🏠 Home Page
 
-![Home Page](./Home.png)
+![Home Page](screenshots/Home.png)
 
 Landing dashboard providing access to summarization and news speech modules.
 
@@ -29,7 +29,7 @@ Landing dashboard providing access to summarization and news speech modules.
 
 ## 📝 Text Summarization
 
-![Text Summarization](./Text.png)
+![Text Summarization](screenshots/Text.png)
 
 Features:
 
@@ -44,7 +44,7 @@ Features:
 
 ## 🌐 URL Summarization
 
-![URL Summarization](./URL.png)
+![URL Summarization](screenshots/URL.png)
 
 - Automatic article extraction via BeautifulSoup
 - Cleaning and normalization of Telugu Unicode
@@ -54,7 +54,7 @@ Features:
 
 ## 🔊 Speak News Module
 
-![Speak News](./Speak.png)
+![Speak News](screenshots/Speak.png)
 
 - Fetches latest Telugu news from backend
 - Generates summary automatically
@@ -64,7 +64,7 @@ Features:
 
 ## 📄 FastAPI Documentation
 
-![API Docs](./Docs.png)
+![API Docs](screenshots/Docs.png)
 
 Interactive Swagger UI available at:
 
