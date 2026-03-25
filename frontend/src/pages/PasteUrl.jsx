@@ -32,9 +32,9 @@ const SUMMARIZATION_METHODS = [
   {
     id: "mt5_finetuned",
     name: "mT5 Fine-tuned",
-    badge: "Best",
+    badge: "Experimental",
     emoji: "✨",
-    description: "Highest quality — mT5 fine-tuned specifically on Telugu news.",
+    description: "Fine-tuned on Telugu dataset",
     color: "text-violet-600 dark:text-violet-400",
     bg: "bg-violet-50 dark:bg-violet-500/10",
     border: "border-violet-200 dark:border-violet-500/20",
