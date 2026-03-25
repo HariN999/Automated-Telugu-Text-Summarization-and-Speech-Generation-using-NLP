@@ -1,87 +1,122 @@
 # 📰 Automated Telugu Text Summarization and Speech Generation
 
-Full-stack AI web application for **Telugu news understanding**, combining extractive and abstractive NLP with optional speech generation.
+Full-stack AI web application for **Telugu news understanding**, combining extractive and abstractive NLP with optional speech synthesis.
 
 This system enables users to input Telugu text or news URLs and receive concise summaries along with optional Telugu audio playback.
 
 ---
 
-# 🚀 Overview
+# 🚀 Project Highlights
 
-This project implements a **deployment-ready multilingual NLP pipeline** built using:
-
-* ⚛️ **React + Vite** frontend
-* ⚡ **FastAPI** backend
-* 🤖 Hybrid summarization architecture:
-
-  * TF-IDF (Extractive)
-  * mT5 Base (XLSum pretrained)
-  * mT5 Fine-Tuned (XLSum Telugu subset)
-* 🔊 Telugu Text-to-Speech using **gTTS**
-
-The architecture is modular and mirrors the research system described in the accompanying paper.
+- ✅ End-to-end working NLP system
+- ✅ Extractive + Transformer-based summarization
+- ✅ Runtime model switching via API
+- ✅ Telugu Text-to-Speech generation
+- ✅ Full-stack React + FastAPI integration
+- ✅ Research-backed architecture with evaluation scripts
 
 ---
 
-# ✨ Features
+# 📸 Application Screenshots
 
-## 📄 Summarization Modes
+## 🏠 Home Page
 
-* Direct Telugu text summarization
-* URL-based article extraction and summarization
-* News Speak mode with backend-generated summaries
+![Home Page](screenshots/Home.png)
 
-## 🎧 Audio
-
-* Optional Telugu MP3 generation via gTTS
-* Native browser playback controls
-
-## 🧠 NLP Pipeline
-
-* BeautifulSoup extraction
-* Telugu Unicode cleaning
-* Runtime model selection:
-
-  * `tfidf`
-  * `mt5_base`
-  * `mt5_finetuned`
-
-## 🎨 Frontend
-
-* TextSummarize page
-* PasteUrl page
-* Speak news reader
-* Light/Dark theme support
+Landing dashboard providing access to summarization and news speech modules.
 
 ---
 
-# 🏗️ Architecture
+## 📝 Text Summarization
+
+![Text Summarization](screenshots/Text.png)
+
+Features:
+
+- Direct Telugu text input
+- Model selection:
+  - `tfidf`
+  - `mt5_base`
+  - `mt5_finetuned`
+- Optional MP3 generation
+
+---
+
+## 🌐 URL Summarization
+
+![URL Summarization](screenshots/URL.png)
+
+- Automatic article extraction via BeautifulSoup
+- Cleaning and normalization of Telugu Unicode
+- Transformer or extractive summarization
+
+---
+
+## 🔊 Speak News Module
+
+![Speak News](screenshots/Speak.png)
+
+- Fetches latest Telugu news from backend
+- Generates summary automatically
+- Produces Telugu MP3 output
+
+---
+
+## 📄 FastAPI Documentation
+
+![API Docs](screenshots/Docs.png)
+
+Interactive Swagger UI available at:
+
+http://localhost:8000/docs
+
+---
+
+# 🏗️ System Architecture
 
 ```
+
 React Frontend  →  FastAPI Backend  →  NLP Pipeline
 
 Input (Text/URL)
-        │
-        ▼
- Extraction → Cleaning → Summarization → gTTS (optional)
-        │
-        ▼
-      JSON Response + Audio URL
+│
+▼
+Extraction → Cleaning → Summarization → gTTS (optional)
+│
+▼
+JSON Response + Audio URL
+
 ```
 
-### Pipeline Components
+---
 
-* `extract.py` — URL parsing
-* `clean.py` — Telugu regex normalization
-* `summarize_tfidf.py` — extractive summarizer
-* `summarize_mt5.py` — transformer summarization
-* `tts.py` — gTTS speech synthesis
+# 🧠 NLP Pipeline Components
+
+| File               | Purpose                             |
+| ------------------ | ----------------------------------- |
+| extract.py         | URL parsing & article extraction    |
+| clean.py           | Telugu regex normalization          |
+| summarize_tfidf.py | Extractive TF-IDF summarization     |
+| summarize_mt5.py   | Transformer-based summarization     |
+| tts.py             | Telugu speech generation using gTTS |
+| pipeline.py        | Orchestrates full flow              |
+
+---
+
+# 📊 Models Implemented
+
+| Method         | Type        | Description                             |
+| -------------- | ----------- | --------------------------------------- |
+| TF-IDF         | Extractive  | Fast sentence ranking baseline          |
+| mT5 Base       | Abstractive | XLSum pretrained multilingual model     |
+| mT5 Fine-Tuned | Abstractive | Further trained on Telugu XL-Sum subset |
 
 ---
 
 # 📂 Project Structure
 
 ```
+
 .
 ├── backend/
 │   ├── app.py
@@ -109,11 +144,12 @@ Input (Text/URL)
 │
 ├── requirements.txt
 └── README.md
+
 ```
 
 ---
 
-# ⚙️ Installation
+# ⚙️ Installation Guide
 
 ## 1️⃣ Clone Repository
 
@@ -124,7 +160,7 @@ cd <project-folder>
 
 ---
 
-## 2️⃣ Backend Setup (Python)
+## 2️⃣ Backend Setup
 
 ```bash
 python -m venv myenv
@@ -141,15 +177,13 @@ cd backend
 uvicorn app:app --reload
 ```
 
-Docs:
+Backend URL:
 
-```
-http://localhost:8000/docs
-```
+[http://localhost:8000](http://localhost:8000)
 
 ---
 
-## 3️⃣ Frontend Setup (Node.js)
+## 3️⃣ Frontend Setup
 
 ```bash
 cd frontend
@@ -157,11 +191,9 @@ npm install
 npm run dev
 ```
 
-App:
+Frontend URL:
 
-```
-http://localhost:5173
-```
+[http://localhost:5173](http://localhost:5173)
 
 Optional environment variable:
 
@@ -173,21 +205,21 @@ VITE_API_URL=http://localhost:8000
 
 # 🔌 API Endpoints
 
-## Health
+### Health
 
 ```
 GET /
 GET /health
 ```
 
-## Summarization
+### Summarization
 
 ```
 POST /summarize
 POST /process-url
 ```
 
-Example body:
+Example request:
 
 ```json
 {
@@ -197,13 +229,13 @@ Example body:
 }
 ```
 
-## News
+### News
 
 ```
 GET /latest-news
 ```
 
-## Audio
+### Audio
 
 ```
 GET /audio/{filename}
@@ -211,76 +243,82 @@ GET /audio/{filename}
 
 ---
 
-# 🔊 Audio System
+# 🔊 Speech System
 
-Speech generation is implemented using:
+Implemented using:
 
 ```python
 from gtts import gTTS
 ```
 
-* Language: Telugu (`lang="te"`)
-* Output: MP3 files
-* Stored under backend audio directory
-* Served via FastAPI `/audio` route
+- Language: Telugu (`lang="te"`)
+- Output: MP3
+- Stored in backend audio directory
+- Served via `/audio` endpoint
 
 ---
 
 # 🧪 Evaluation & Research Scripts
 
-These scripts are **not runtime components**:
+These scripts are experimental and not part of runtime:
 
-* `rouge_eval.py`
-* `test_base_models.py`
+- rouge_eval.py
+- test_base_models.py
 
 Used for:
 
-* ROUGE scoring
-* Model comparison experiments
+- ROUGE scoring
+- Comparative model evaluation
 
 ---
 
-# 📊 Models
+# 🧩 Key Design Decisions
 
-| Method         | Type        | Description                                |
-| -------------- | ----------- | ------------------------------------------ |
-| TF-IDF         | Extractive  | Fast sentence ranking                      |
-| mT5 Base       | Abstractive | XLSum pretrained                           |
-| mT5 Fine-Tuned | Abstractive | Continued training on XL-Sum Telugu subset |
-
----
-
-# 🧩 Design Decisions
-
-* Production voice engine uses **gTTS only**
-* Speak module simplified to Telugu news workflow
-* Weather and experimental voice engines removed
-* Modular architecture supports future model swapping
+- gTTS selected for production stability
+- Modular architecture for easy model swapping
+- Clear separation of research and production components
+- Simplified Speak module for focused Telugu news workflow
 
 ---
 
-# 🔮 Future Improvements
+# 🔮 Future Enhancements
 
-* Larger evaluation corpus
-* Telugu morphological normalization
-* Hybrid extractive + abstractive pipeline
-* Multilingual extension (Tamil, Kannada, Malayalam)
-* Improved factuality evaluation
+- Larger evaluation dataset
+- Telugu morphological normalization
+- Hybrid extractive + abstractive pipeline
+- Multilingual expansion (Tamil, Kannada, Malayalam)
+- Improved factual consistency validation
 
 ---
 
 # 📄 Research Context
 
-This repository accompanies a research system demonstrating:
+This repository demonstrates:
 
-* Low-resource Indian language NLP deployment
-* Runtime model switching via API parameter
-* Full-stack integration of summarization and speech synthesis
+- Low-resource Indian language NLP deployment
+- Transformer fine-tuning for Telugu
+- Full-stack AI integration
+- Runtime model selection via API parameter
 
 ---
 
-# 🧑‍💻 Author
+# 👥 Project Team
 
-**Narlakanti Hariharan**
+This project was developed as a collaborative academic group project.
 
+- Narlakanti Hariharan
+- Vivek Nidumolu
+- Vishnu Vardhan
+- Sanjeev Practur
 
+---
+
+# 🤝 Contribution Overview
+
+The team collaboratively contributed to:
+
+- Frontend Development (React + UI Integration)
+- Backend Development (FastAPI + API Design)
+- NLP Pipeline Implementation (TF-IDF + mT5 Models)
+- Model Evaluation & ROUGE Experiments
+- Research Documentation & System Integration
