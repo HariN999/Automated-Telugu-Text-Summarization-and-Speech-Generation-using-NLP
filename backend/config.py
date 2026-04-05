@@ -31,6 +31,8 @@ NO_REPEAT_NGRAM = 3
 # TTS Settings
 TTS_LANGUAGE = "te"
 TTS_SLOW = False
+EDGE_TTS_VOICE = "te-IN-ShrutiNeural"
+EDGE_TTS_RATE = "+0%"
 
 # API Settings
 API_HOST = "0.0.0.0"

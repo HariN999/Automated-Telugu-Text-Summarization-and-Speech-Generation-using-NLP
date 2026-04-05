@@ -203,7 +203,7 @@ function HeroSection({ onGetStarted }) {
               step="05"
               icon="volume-up"
               title="Speech Generation"
-              desc="gTTS converts the final summary into natural-sounding Telugu audio."
+              desc="Edge TTS converts the final summary into natural-sounding Telugu audio."
             />
           </div>
         </div>

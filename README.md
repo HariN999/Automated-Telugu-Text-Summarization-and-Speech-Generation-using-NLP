@@ -81,7 +81,7 @@ React Frontend  →  FastAPI Backend  →  NLP Pipeline
 Input (Text/URL)
 │
 ▼
-Extraction → Cleaning → Summarization → gTTS (optional)
+Extraction → Cleaning → Summarization → Edge TTS (optional)
 │
 ▼
 JSON Response + Audio URL
@@ -98,7 +98,7 @@ JSON Response + Audio URL
 | clean.py           | Telugu regex normalization          |
 | summarize_tfidf.py | Extractive TF-IDF summarization     |
 | summarize_mt5.py   | Transformer-based summarization     |
-| tts.py             | Telugu speech generation using gTTS |
+| tts.py             | Telugu speech generation using Edge TTS |
 | pipeline.py        | Orchestrates full flow              |
 
 ---
@@ -248,10 +248,10 @@ GET /audio/{filename}
 Implemented using:
 
 ```python
-from gtts import gTTS
+import edge_tts
 ```
 
-- Language: Telugu (`lang="te"`)
+- Voice: Telugu neural voice
 - Output: MP3
 - Stored in backend audio directory
 - Served via `/audio` endpoint
@@ -274,7 +274,7 @@ Used for:
 
 # 🧩 Key Design Decisions
 
-- gTTS selected for production stability
+- Edge TTS selected for backend speech generation
 - Modular architecture for easy model swapping
 - Clear separation of research and production components
 - Simplified Speak module for focused Telugu news workflow

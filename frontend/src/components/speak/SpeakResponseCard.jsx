@@ -55,17 +55,6 @@ function SpeakResponseCard({
             {newsData[currentIndex]?.headline}
           </MotionH2>
 
-          {selectedMode === "top-news" && (
-            <MotionP
-              key={`firstline-${currentIndex}`}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="text-sm leading-relaxed text-[var(--text-secondary)]"
-            >
-              {newsData[currentIndex]?.firstLine}
-            </MotionP>
-          )}
-
           {selectedMode === "brief" && (
             <MotionP
               key={`brief-${currentIndex}`}

@@ -16,6 +16,12 @@ const NEWS_LANGUAGE = "te";
 const commandMatches = (dictionary, transcript) =>
   dictionary.some((command) => transcript.includes(command));
 
+const joinSpokenParts = (...parts) =>
+  parts
+    .map((part) => String(part ?? "").trim())
+    .filter(Boolean)
+    .join(". ");
+
 function Speak() {
   const [uiLanguage, setUiLanguage] = useState("en");
   const [selectedMode, setSelectedMode] = useState("radio");
@@ -51,11 +57,11 @@ function Speak() {
     (newsItem) => {
       switch (selectedMode) {
         case "top-news":
-          return `${newsItem.headline}. ${newsItem.firstLine}`;
+          return joinSpokenParts(newsItem.headline);
         case "brief":
-          return `${newsItem.headline}. ${newsItem.brief}`;
+          return joinSpokenParts(newsItem.headline, newsItem.brief);
         case "radio":
-          return `${newsItem.headline}. ${newsItem.fullText}`;
+          return joinSpokenParts(newsItem.headline, newsItem.fullText);
         default:
           return newsItem.headline;
       }
@@ -92,8 +98,8 @@ function Speak() {
         setIsPlaying(false);
       };
 
-      // Prefer backend-generated audio; fall back to browser synthesis if absent.
-      if (newsItem.audioUrl) {
+      // Backend audio is generated from the brief summary, so only reuse it in Brief mode.
+      if (selectedMode === "brief" && newsItem.audioUrl) {
         playUrl({
           url: newsItem.audioUrl,
           onEnd: handleEnd,
@@ -487,9 +493,9 @@ function Speak() {
                       >
                         {item.headline}
                       </h4>
-                      {selectedMode !== "radio" && (
+                      {selectedMode === "brief" && (
                         <p className="mt-1 line-clamp-2 text-xs leading-relaxed text-[var(--text-secondary)]">
-                          {selectedMode === "top-news" ? item.firstLine : item.brief}
+                          {item.brief}
                         </p>
                       )}
                     </div>

@@ -134,7 +134,7 @@ def latest_news(
         summarized_news: list[LatestNewsItem] = []
 
         for article in raw_articles[:5]:
-            article_text = clean_text(article.get("text", ""))
+            article_text = clean_text(article.get("full_text", "") or article.get("text", ""))
             if not article_text:
                 continue
 
@@ -147,6 +147,8 @@ def latest_news(
             summary = result.get("summary", "").strip()
             title = article.get("title", "").strip() or "Telugu News"
             source_name = article.get("source", "rss")
+            first_line = clean_text(article.get("first_line", "")).strip()
+            full_text = article_text
             audio_url = None
             if result.get("audio_path"):
                 filename = os.path.basename(result["audio_path"])
@@ -163,9 +165,9 @@ def latest_news(
                     audio_url=audio_url,
                     # Speak frontend compatibility payload
                     headline=title,
-                    firstLine=summary,
+                    firstLine=first_line,
                     brief=summary,
-                    fullText=summary,
+                    fullText=full_text,
                     source=source_name,
                 )
             )
