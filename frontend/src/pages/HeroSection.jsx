@@ -179,7 +179,7 @@ function HeroSection({ onGetStarted }) {
               step="01"
               icon="search"
               title="Content Extraction"
-              desc="BeautifulSoup extracts Telugu news articles or pasted text."
+              desc="BeautifulSoup extracts Telugu news articles."
             />
             <ArchStep
               step="02"

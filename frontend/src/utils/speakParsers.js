@@ -5,6 +5,9 @@ const normalizeNewsItem = (item) => ({
   fullText: String(item?.fullText ?? item?.full_text ?? "").trim(),
   source: String(item?.source ?? "Unknown Source").trim(),
   audioUrl: item?.audioUrl ?? item?.audio_url ?? null,
+  topNewsAudioUrl: item?.topNewsAudioUrl ?? item?.top_news_audio_url ?? null,
+  briefAudioUrl: item?.briefAudioUrl ?? item?.brief_audio_url ?? item?.audioUrl ?? item?.audio_url ?? null,
+  radioAudioUrl: item?.radioAudioUrl ?? item?.radio_audio_url ?? null,
 });
 
 export const normalizeNewsResponse = (payload) => {

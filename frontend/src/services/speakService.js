@@ -26,6 +26,9 @@ export const fetchLatestNews = async () => {
     const news = normalizeNewsResponse(payload).map((item) => ({
       ...item,
       audioUrl: resolveAudioUrl(item.audioUrl),
+      topNewsAudioUrl: resolveAudioUrl(item.topNewsAudioUrl),
+      briefAudioUrl: resolveAudioUrl(item.briefAudioUrl),
+      radioAudioUrl: resolveAudioUrl(item.radioAudioUrl),
     }));
     if (news.length > 0) {
       return news;

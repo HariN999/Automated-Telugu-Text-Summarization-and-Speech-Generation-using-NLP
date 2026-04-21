@@ -2,18 +2,29 @@
 Telugu News Summarization API
 FastAPI application for text summarization with TTS
 """
+import hashlib
+import logging
+import os
+import time
+from concurrent.futures import ThreadPoolExecutor, as_completed
+from threading import Lock
+
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 from typing import Optional, Literal
-import os
 
 from clean import clean_text
 from pipeline import run_pipeline
 from services.news_service import fetch_telugu_news
+from tts import text_to_speech
 
+if not logging.getLogger().handlers:
+    logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s %(message)s")
+
+logger = logging.getLogger(__name__)
 
 app = FastAPI(
     title="Telugu News Summarization API",
@@ -34,6 +45,10 @@ app.add_middleware(
 AUDIO_DIR = "data"
 os.makedirs(AUDIO_DIR, exist_ok=True)
 app.mount("/audio", StaticFiles(directory=AUDIO_DIR), name="audio")
+
+SUMMARY_CACHE_TTL_SECONDS = 300
+_SUMMARY_CACHE: dict[str, dict[str, object]] = {}
+_SUMMARY_CACHE_LOCK = Lock()
 
 
 # ============================================================================
@@ -72,6 +87,9 @@ class LatestNewsItem(BaseModel):
     summary: str = Field(..., description="AI summarized Telugu news")
     method: str = Field(..., description="Summarization method used")
     audio_url: Optional[str] = Field(None, description="URL to audio file")
+    top_news_audio_url: Optional[str] = Field(None, description="Edge TTS URL for top-news mode")
+    brief_audio_url: Optional[str] = Field(None, description="Edge TTS URL for brief mode")
+    radio_audio_url: Optional[str] = Field(None, description="Edge TTS URL for radio mode")
     # Speak frontend compatibility keys
     headline: str = Field(..., description="Headline field used by Speak UI")
     firstLine: str = Field(..., description="Short line field used by Speak UI")
@@ -83,6 +101,46 @@ class LatestNewsItem(BaseModel):
 class LatestNewsResponse(BaseModel):
     source: str = Field(..., description="News pipeline source")
     news: list[LatestNewsItem] = Field(default_factory=list)
+
+
+def _summary_cache_key(text: str, method: str) -> str:
+    return hashlib.sha256(f"{method}::{text}".encode("utf-8")).hexdigest()
+
+
+def _get_cached_summary(text: str, method: str) -> str | None:
+    cache_key = _summary_cache_key(text, method)
+    now = time.time()
+    with _SUMMARY_CACHE_LOCK:
+        cached = _SUMMARY_CACHE.get(cache_key)
+        if cached and now - float(cached["timestamp"]) < SUMMARY_CACHE_TTL_SECONDS:
+            return str(cached["summary"])
+        if cached:
+            _SUMMARY_CACHE.pop(cache_key, None)
+    return None
+
+
+def _set_cached_summary(text: str, method: str, summary: str) -> None:
+    if not summary:
+        return
+
+    cache_key = _summary_cache_key(text, method)
+    with _SUMMARY_CACHE_LOCK:
+        _SUMMARY_CACHE[cache_key] = {
+            "timestamp": time.time(),
+            "summary": summary,
+        }
+
+
+def _build_audio_url(audio_path: str | None) -> str | None:
+    if not audio_path:
+        return None
+    return f"/audio/{os.path.basename(audio_path)}"
+
+
+def _synthesize_audio(text: str) -> str | None:
+    if not text or not text.strip():
+        return None
+    return text_to_speech(text)
 
 
 # ============================================================================
@@ -129,49 +187,116 @@ def latest_news(
     fetch RSS -> clean text -> run_pipeline(method='mt5_finetuned', generate_audio=True)
     """
     try:
+        overall_start = time.perf_counter()
         _ = language  # Kept for frontend compatibility.
+        fetch_start = time.perf_counter()
         raw_articles = fetch_telugu_news(limit=limit)
-        summarized_news: list[LatestNewsItem] = []
+        logger.info("latest-news fetch stage completed in %.2fs", time.perf_counter() - fetch_start)
+
+        prepared_items: list[dict[str, str]] = []
+        summarize_total = 0.0
 
         for article in raw_articles[:5]:
             article_text = clean_text(article.get("full_text", "") or article.get("text", ""))
             if not article_text:
                 continue
 
-            result = run_pipeline(
-                text_or_url=article_text,
-                method="mt5_finetuned",
-                generate_audio=True,
-            )
+            summarize_start = time.perf_counter()
+            summary = _get_cached_summary(article_text, "mt5_finetuned")
+            if summary is None:
+                result = run_pipeline(
+                    text_or_url=article_text,
+                    method="mt5_finetuned",
+                    generate_audio=False,
+                )
+                summary = result.get("summary", "").strip()
+                _set_cached_summary(article_text, "mt5_finetuned", summary)
+            else:
+                summary = summary.strip()
+            summarize_elapsed = time.perf_counter() - summarize_start
+            summarize_total += summarize_elapsed
+            logger.info("latest-news summarization stage completed in %.2fs", summarize_elapsed)
 
-            summary = result.get("summary", "").strip()
             title = article.get("title", "").strip() or "Telugu News"
             source_name = article.get("source", "rss")
             first_line = clean_text(article.get("first_line", "")).strip()
             full_text = article_text
-            audio_url = None
-            if result.get("audio_path"):
-                filename = os.path.basename(result["audio_path"])
-                audio_url = f"/audio/{filename}"
+
+            top_news_text = clean_text(" ".join(part for part in (title, first_line) if part)).strip()
+            radio_text = clean_text(" ".join(part for part in (title, full_text) if part)).strip()
 
             if not summary:
                 continue
 
+            prepared_items.append(
+                {
+                    "title": title,
+                    "summary": summary,
+                    "method": "mt5_finetuned",
+                    "headline": title,
+                    "firstLine": first_line,
+                    "brief": summary,
+                    "fullText": full_text,
+                    "source": source_name,
+                    "brief_text": summary,
+                    "top_news_text": top_news_text,
+                    "radio_text": radio_text,
+                }
+            )
+
+        logger.info("latest-news total summarization time %.2fs", summarize_total)
+
+        tts_start = time.perf_counter()
+        tts_results: dict[tuple[int, str], str | None] = {}
+        tts_jobs: list[tuple[int, str, str]] = []
+        for index, item in enumerate(prepared_items):
+            for field_name, text in (
+                ("audio_url", item["brief_text"]),
+                ("top_news_audio_url", item["top_news_text"]),
+                ("radio_audio_url", item["radio_text"]),
+            ):
+                if text:
+                    tts_jobs.append((index, field_name, text))
+
+        if tts_jobs:
+            max_workers = min(8, len(tts_jobs))
+            with ThreadPoolExecutor(max_workers=max_workers) as executor:
+                future_map = {
+                    executor.submit(_synthesize_audio, text): (index, field_name)
+                    for index, field_name, text in tts_jobs
+                }
+                for future in as_completed(future_map):
+                    index, field_name = future_map[future]
+                    tts_results[(index, field_name)] = _build_audio_url(future.result())
+
+        logger.info("latest-news TTS stage completed in %.2fs", time.perf_counter() - tts_start)
+
+        summarized_news: list[LatestNewsItem] = []
+        for index, item in enumerate(prepared_items):
+            audio_url = tts_results.get((index, "audio_url"))
             summarized_news.append(
                 LatestNewsItem(
-                    title=title,
-                    summary=summary,
-                    method="mt5_finetuned",
+                    title=item["title"],
+                    summary=item["summary"],
+                    method=item["method"],
                     audio_url=audio_url,
+                    top_news_audio_url=tts_results.get((index, "top_news_audio_url")),
+                    brief_audio_url=audio_url,
+                    radio_audio_url=tts_results.get((index, "radio_audio_url")),
                     # Speak frontend compatibility payload
-                    headline=title,
-                    firstLine=first_line,
-                    brief=summary,
-                    fullText=full_text,
-                    source=source_name,
+                    headline=item["headline"],
+                    firstLine=item["firstLine"],
+                    brief=item["brief"],
+                    fullText=item["fullText"],
+                    source=item["source"],
                 )
             )
 
+        logger.info(
+            "latest-news total request completed in %.2fs for %d items",
+            time.perf_counter() - overall_start,
+            len(summarized_news),
+        )
         return LatestNewsResponse(source="bbc_eenadu_pipeline", news=summarized_news)
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to fetch latest news: {str(e)}")

@@ -22,6 +22,19 @@ const joinSpokenParts = (...parts) =>
     .filter(Boolean)
     .join(". ");
 
+const getModeAudioUrl = (newsItem, mode) => {
+  switch (mode) {
+    case "top-news":
+      return newsItem.topNewsAudioUrl ?? null;
+    case "brief":
+      return newsItem.briefAudioUrl ?? newsItem.audioUrl ?? null;
+    case "radio":
+      return newsItem.radioAudioUrl ?? null;
+    default:
+      return null;
+  }
+};
+
 function Speak() {
   const [uiLanguage, setUiLanguage] = useState("en");
   const [selectedMode, setSelectedMode] = useState("radio");
@@ -57,7 +70,7 @@ function Speak() {
     (newsItem) => {
       switch (selectedMode) {
         case "top-news":
-          return joinSpokenParts(newsItem.headline);
+          return joinSpokenParts(newsItem.headline, newsItem.firstLine);
         case "brief":
           return joinSpokenParts(newsItem.headline, newsItem.brief);
         case "radio":
@@ -80,6 +93,7 @@ function Speak() {
 
       const newsItem = newsData[index];
       const textToSpeak = getContentToSpeak(newsItem);
+      const modeAudioUrl = getModeAudioUrl(newsItem, selectedMode);
       const handleEnd = () => {
         const nextIndex = index + 1;
         if (playbackEnabledRef.current && nextIndex < newsData.length) {
@@ -98,10 +112,9 @@ function Speak() {
         setIsPlaying(false);
       };
 
-      // Backend audio is generated from the brief summary, so only reuse it in Brief mode.
-      if (selectedMode === "brief" && newsItem.audioUrl) {
+      if (modeAudioUrl) {
         playUrl({
-          url: newsItem.audioUrl,
+          url: modeAudioUrl,
           onEnd: handleEnd,
           onError: handleError,
         });
