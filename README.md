@@ -116,6 +116,7 @@ Fine-tuning did not improve performance due to limited dataset size and the pre-
 ├── screenshots/
 ├── assets/
 ├── requirements.txt
+├── LICENSE
 └── README.md
 ```
 
