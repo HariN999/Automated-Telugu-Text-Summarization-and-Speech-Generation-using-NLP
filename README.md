@@ -171,6 +171,23 @@ GET /audio/{filename}
 * Served via backend API
 
 ---
+# 📦 Fine-Tuned Model Note
+
+The fine-tuned mT5 model is not included in this repository due to size constraints.
+
+- If the local fine-tuned model is not found, the system automatically falls back to the public mT5 base model (`csebuetnlp/mT5_multilingual_XLSum`).
+- This ensures the application runs successfully after cloning the repository.
+
+To use the fine-tuned model:
+
+1. Place the model in:
+   `backend/model/mt5-telugu-news-finetuned/`
+
+2. Restart the backend server
+
+📌 If not provided, the base model will be used by default.
+
+---
 
 # 👥 Team Contributions
 
