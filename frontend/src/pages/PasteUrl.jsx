@@ -362,7 +362,7 @@ function PasteUrl() {
 
                   <div className="flex flex-wrap gap-3">
                     <audio controls className="w-full mt-3">
-                      <source src={`http://localhost:8000${result.audioUrl}`} type="audio/mpeg" />
+                      <source src={APIService.getAudioUrl(result.audioUrl)} type="audio/mpeg" />
                     </audio>
 
                     <a

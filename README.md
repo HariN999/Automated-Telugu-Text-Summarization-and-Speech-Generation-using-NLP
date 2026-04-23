@@ -133,6 +133,7 @@ source myenv/bin/activate     # macOS/Linux
 
 pip install -r requirements.txt
 cd backend
+cp .env.example .env   # optional: adjust CORS_ORIGINS / port
 uvicorn app:app --reload
 ```
 
@@ -145,6 +146,7 @@ Backend: http://localhost:8000
 ```bash
 cd frontend
 npm install
+cp .env.example .env   # optional: point VITE_API_URL at deployed backend
 npm run dev
 ```
 

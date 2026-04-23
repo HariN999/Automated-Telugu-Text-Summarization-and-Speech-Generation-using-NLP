@@ -3,6 +3,26 @@ Configuration Settings
 """
 import os
 
+
+def _get_bool_env(name: str, default: bool = False) -> bool:
+    value = os.getenv(name)
+    if value is None:
+        return default
+    return value.strip().lower() in {"1", "true", "yes", "on"}
+
+
+def _get_cors_origins() -> list[str]:
+    raw_origins = os.getenv("CORS_ORIGINS")
+    if raw_origins:
+        return [origin.strip() for origin in raw_origins.split(",") if origin.strip()]
+    return [
+        "http://localhost:5173",
+        "http://127.0.0.1:5173",
+        "http://localhost:3000",
+        "http://127.0.0.1:3000",
+    ]
+
+
 # Directories
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(BASE_DIR, "data")
@@ -35,6 +55,7 @@ EDGE_TTS_VOICE = "te-IN-ShrutiNeural"
 EDGE_TTS_RATE = "+0%"
 
 # API Settings
-API_HOST = "0.0.0.0"
-API_PORT = 8000
-CORS_ORIGINS = ["*"]
+API_HOST = os.getenv("API_HOST", "0.0.0.0")
+API_PORT = int(os.getenv("API_PORT", "8000"))
+DEBUG = _get_bool_env("DEBUG", default=False)
+CORS_ORIGINS = _get_cors_origins()

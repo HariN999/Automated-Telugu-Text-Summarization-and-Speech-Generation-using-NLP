@@ -385,7 +385,7 @@ function TextSummarize() {
                         Audio generated
                       </div>
                       <audio controls className="mt-3 w-full">
-                        <source src={`http://localhost:8000${audioUrl}`} type="audio/mpeg" />
+                        <source src={APIService.getAudioUrl(audioUrl)} type="audio/mpeg" />
                       </audio>
                       <a
                         href={APIService.getAudioUrl(audioUrl)}

@@ -32,6 +32,9 @@ class APIService {
    */
   static getAudioUrl(path) {
     if (!path) return null;
+    if (path.startsWith("http://") || path.startsWith("https://")) {
+      return path;
+    }
     // Path already includes /audio/ prefix from backend
     return `${API_BASE_URL}${path}`;
   }

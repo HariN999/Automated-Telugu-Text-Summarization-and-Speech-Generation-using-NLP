@@ -17,6 +17,7 @@ from pydantic import BaseModel, Field
 from typing import Optional, Literal
 
 from clean import clean_text
+from config import API_HOST, API_PORT, CORS_ORIGINS, DATA_DIR, DEBUG
 from pipeline import run_pipeline
 from services.news_service import fetch_telugu_news
 from tts import text_to_speech
@@ -36,13 +37,13 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
+    allow_origins=CORS_ORIGINS,
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-AUDIO_DIR = "data"
+AUDIO_DIR = DATA_DIR
 os.makedirs(AUDIO_DIR, exist_ok=True)
 app.mount("/audio", StaticFiles(directory=AUDIO_DIR), name="audio")
 
@@ -403,4 +404,4 @@ def get_audio(filename: str):
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run("app:app", host="0.0.0.0", port=8000, reload=True)
+    uvicorn.run("app:app", host=API_HOST, port=API_PORT, reload=DEBUG)
