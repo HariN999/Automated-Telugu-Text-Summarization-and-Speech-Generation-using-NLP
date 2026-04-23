@@ -13,7 +13,7 @@ This system enables users to input Telugu text or news URLs and receive concise 
 # 🎬 Demo
 
 🎥 **Video Demo:**
-[Watch Demo](https://drive.google.com/file/d/1V2obiXQubsv62NXqQU1mHf2F040pOVYV/view?usp=drive_link)
+[Watch Demo](https://drive.google.com/file/d/1BcKZtN3p1y47VnsjAZhXa5IvfEEtf2h3/view?usp=sharing)
 
 🧪 **What the demo shows:**
 
