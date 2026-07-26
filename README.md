@@ -218,10 +218,10 @@ npm run dev
 
 | Name | Role |
 |------|------|
-| Hariharan Narlakanti | Backend, NLP, Research |
-| Vishnu Vardhan Reddy Padala | Frontend Engineering & UI/UX |
-| Vivek Nidumolu | Testing, Debugging |
-| Sanjeev Practur | Data Collection & Preprocessing |
+| Hariharan Narlakanti | AI Research Engineer |
+| Vishnu Vardhan Reddy Padala | AI Engineer |
+| Vivek Nidumolu | Software Quality Assurance Engineer |
+| Sanjeev Practur | Data Engineer |
 
 ---
 
