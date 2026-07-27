@@ -115,5 +115,16 @@ frontend/dist/
 research/paper/*.tex
 reviewer_response.md
 
+# Private research documents & response drafts
+*.docx
+
+# Local testing and significance reports
+backend/extended_eval_report.md
+backend/significance_report.md
+
+# Local evaluation/ablation outputs & scripts
+research/outputs/
+research/evaluation/tfidf_ablation.py
+research/paper/images/
 
 ```
