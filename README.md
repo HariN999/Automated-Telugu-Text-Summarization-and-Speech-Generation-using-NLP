@@ -5,7 +5,6 @@
 ![Transformers](https://img.shields.io/badge/HuggingFace-Transformers-FFD21E)
 ![Docker](https://img.shields.io/badge/Docker-HF%20Spaces-2496ED)
 ![Vercel](https://img.shields.io/badge/Frontend-Vercel-000000)
-![DEV.to](https://img.shields.io/badge/DEV.to-Case%20Study-0A0A0A?logo=devto)
 
 **Saaram** (సారం, *"essence"*) is a production-deployed Telugu news summarization and speech generation system combining **morphology-aware TF-IDF**, **mT5 transformer summarization**, **adaptive inference routing**, and **Telugu neural text-to-speech**.
 <p align="center">
@@ -17,8 +16,6 @@ Built for **low-resource deployment**: balancing quality, latency, memory effici
 
 > 📄 Research: Manuscript submitted to **CIS 2026** (NIT Warangal × SCRS, Springer LNNS)
 > *Saaram: Resource-Aware Telugu News Summarization with Morphology-Aware TF-IDF and mT5*
->
-> 📝 Case Study: Read the full engineering breakdown on [DEV.to](https://dev.to/harin999/building-saaram-a-resource-aware-telugu-news-summarization-platform-with-fastapi-mt5-and-44d7)
 
 ---
 
@@ -218,10 +215,10 @@ npm run dev
 
 | Name | Role |
 |------|------|
-| Hariharan Narlakanti | AI Research Engineer |
-| Vishnu Vardhan Reddy Padala | AI Engineer |
-| Vivek Nidumolu | Software Quality Assurance Engineer |
-| Sanjeev Practur | Data Engineer |
+| Hariharan Narlakanti | Backend, NLP, Research |
+| Vishnu Vardhan Reddy Padala | Frontend Engineering & UI/UX |
+| Vivek Nidumolu | Testing, Debugging |
+| Sanjeev Practur | Data Collection & Preprocessing |
 
 ---
 
@@ -236,7 +233,6 @@ npm run dev
 ## 🔗 Links
 
 - [Live Demo](https://saaram-nlp.vercel.app/)
-- [DEV.to Case Study](https://dev.to/harin999/building-saaram-a-resource-aware-telugu-news-summarization-platform-with-fastapi-mt5-and-44d7)
 - [Backend API](https://harin999-telugu-summarizer-backend.hf.space)
 - [API Docs /docs](https://harin999-telugu-summarizer-backend.hf.space/docs)
 - [Technical Docs](docs/)
