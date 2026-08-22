@@ -36,7 +36,7 @@ os.makedirs(MODEL_DIR, exist_ok=True)
 
 # Model Settings
 MT5_BASE_MODEL = "csebuetnlp/mT5_multilingual_XLSum"
-MT5_FINETUNED_PATH = os.path.join(MODEL_DIR, "mt5-telugu-news-finetuned")
+MT5_FINETUNED_PATH = os.path.join(MODEL_DIR, "kaggle_mt5_finetuned")
 
 # Summarization Settings
 MAX_INPUT_LENGTH = 512

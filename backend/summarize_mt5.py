@@ -20,7 +20,7 @@ _MT5_FALLBACK_MESSAGE: ContextVar[Optional[str]] = ContextVar("_MT5_FALLBACK_MES
 _MT5_FALLBACK_REASON: ContextVar[Optional[str]] = ContextVar("_MT5_FALLBACK_REASON", default=None)
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-MODEL_PATH = os.path.join(BASE_DIR, "model", "mt5-telugu-news-finetuned")
+MODEL_PATH = os.path.join(BASE_DIR, "model", "kaggle_mt5_finetuned")
 
 BASE_MODEL_NAME = "csebuetnlp/mT5_multilingual_XLSum"
 FINETUNED_MODEL = MODEL_PATH if os.path.exists(MODEL_PATH) else BASE_MODEL_NAME
