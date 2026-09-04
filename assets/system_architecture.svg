@@ -1,122 +1,131 @@
 <svg width="100%" viewBox="0 0 680 340" xmlns="http://www.w3.org/2000/svg">
 <defs>
-  <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-    <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <marker id="arrow-gray" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+    <polygon points="0 2, 8 5, 0 8" fill="#94A3B8"/>
+  </marker>
+  <marker id="arrow-amber" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+    <polygon points="0 2, 8 5, 0 8" fill="#F59E0B"/>
+  </marker>
+  <marker id="arrow-blue" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+    <polygon points="0 2, 8 5, 0 8" fill="#38BDF8"/>
+  </marker>
+  <marker id="arrow-purple" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+    <polygon points="0 2, 8 5, 0 8" fill="#8B5CF6"/>
   </marker>
 </defs>
 
 <!-- ── React.js Frontend (top-left, purple) ── -->
-<g style="fill:rgb(0, 0, 0);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:'Anthropic Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto">
-  <rect x="30" y="30" width="140" height="64" rx="6" stroke-width="0.8" style="fill:rgb(60, 52, 137);stroke:rgb(175, 169, 236);stroke-width:0.8px;"/>
-  <text x="100" y="52" text-anchor="middle" dominant-baseline="central" style="fill:rgb(206, 203, 246);font-size:14px;font-weight:500;text-anchor:middle;">Saaram Frontend</text>
-  <text x="100" y="72" text-anchor="middle" dominant-baseline="central" style="fill:rgb(175, 169, 236);font-size:12px;font-weight:400;text-anchor:middle;">React.js | Method Select</text>
-  <text x="100" y="86" text-anchor="middle" dominant-baseline="central" style="fill:rgb(175, 169, 236);font-size:12px;font-weight:400;text-anchor:middle;">| Audio</text>
+<g style="font-family:'Segoe UI', -apple-system, BlinkMacSystemFont, Arial, sans-serif;">
+  <rect x="30" y="30" width="140" height="64" rx="6" stroke-width="1.2" style="fill:rgb(60, 52, 137);stroke:rgb(175, 169, 236);"/>
+  <text x="100" y="48" text-anchor="middle" dominant-baseline="central" style="fill:rgb(224, 222, 250);font-size:13px;font-weight:600;">Saaram Frontend</text>
+  <text x="100" y="64" text-anchor="middle" dominant-baseline="central" style="fill:rgb(195, 190, 245);font-size:11px;font-weight:400;">React.js</text>
+  <text x="100" y="79" text-anchor="middle" dominant-baseline="central" style="fill:rgb(175, 169, 236);font-size:10px;font-weight:400;">Method Select | Audio</text>
 </g>
 
 <!-- Axios JSON arrow: Frontend → FastAPI -->
-<line x1="170" y1="62" x2="240" y2="62" marker-end="url(#arrow)" stroke="#7F77DD" style="fill:none;stroke-width:1.5px;"/>
-<text x="205" y="55" text-anchor="middle" style="fill:rgb(194, 192, 182);font-family:'Anthropic Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;font-size:11px;font-weight:400;text-anchor:middle;font-style:italic;">JSON/Axios</text>
+<line x1="170" y1="62" x2="240" y2="62" marker-end="url(#arrow-purple)" stroke="#8B5CF6" stroke-width="2"/>
+<text x="205" y="52" text-anchor="middle" style="fill:#475569;font-family:'Segoe UI', -apple-system, Arial, sans-serif;font-size:11px;font-weight:500;font-style:italic;">JSON/Axios</text>
 
 <!-- ── FastAPI Backend (top-right, amber) ── -->
-<g style="fill:rgb(0, 0, 0);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;font-family:'Anthropic Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;font-size:16px;font-weight:400;">
-  <rect x="240" y="30" width="160" height="64" rx="6" stroke-width="0.8" style="fill:rgb(99, 56, 6);stroke:rgb(239, 159, 39);stroke-width:0.8px;"/>
-  <text x="320" y="50" text-anchor="middle" dominant-baseline="central" style="fill:rgb(250, 199, 117);font-size:14px;font-weight:500;text-anchor:middle;">FastAPI Backend</text>
-  <text x="320" y="72" text-anchor="middle" dominant-baseline="central" style="fill:rgb(239, 159, 39);font-size:12px;font-weight:400;text-anchor:middle;">Pydantic | Router | Dispatch</text>
+<g style="font-family:'Segoe UI', -apple-system, BlinkMacSystemFont, Arial, sans-serif;">
+  <rect x="240" y="30" width="160" height="64" rx="6" stroke-width="1.2" style="fill:rgb(99, 56, 6);stroke:rgb(239, 159, 39);"/>
+  <text x="320" y="50" text-anchor="middle" dominant-baseline="central" style="fill:rgb(254, 215, 170);font-size:14px;font-weight:600;">FastAPI Backend</text>
+  <text x="320" y="72" text-anchor="middle" dominant-baseline="central" style="fill:rgb(251, 191, 36);font-size:11px;font-weight:400;">Pydantic | Router | Dispatch</text>
 </g>
 
 <!-- ── Group Boxes ── -->
 <!-- Input Processing group box (purple) -->
-<rect x="22" y="148" width="176" height="96" rx="8" fill="none" stroke="#be78d2" stroke-width="0.8" stroke-dasharray="5 3"/>
-<text x="110" y="260" text-anchor="middle" fill="#be78d2" style="fill:rgb(194, 192, 182);font-family:'Anthropic Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;font-size:11px;text-anchor:middle;font-style:italic;">Input Processing</text>
+<rect x="22" y="148" width="176" height="92" rx="8" fill="none" stroke="#be78d2" stroke-width="1" stroke-dasharray="5 3"/>
+<text x="110" y="262" text-anchor="middle" fill="#9333ea" style="font-family:'Segoe UI', -apple-system, Arial, sans-serif;font-size:11px;font-weight:500;font-style:italic;">Input Processing</text>
 
 <!-- Router group box (yellow) -->
-<rect x="202" y="148" width="86" height="96" rx="8" fill="none" stroke="#dcc350" stroke-width="0.8" stroke-dasharray="5 3"/>
-<text x="245" y="260" text-anchor="middle" fill="#dcc350" style="fill:rgb(194, 192, 182);font-family:'Anthropic Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;font-size:11px;text-anchor:middle;font-style:italic;">Router</text>
+<rect x="202" y="148" width="86" height="92" rx="8" fill="none" stroke="#dcc350" stroke-width="1" stroke-dasharray="5 3"/>
+<text x="245" y="262" text-anchor="middle" fill="#b45309" style="font-family:'Segoe UI', -apple-system, Arial, sans-serif;font-size:11px;font-weight:500;font-style:italic;">Router</text>
 
 <!-- Summarization group box (green) -->
-<rect x="292" y="148" width="266" height="96" rx="8" fill="none" stroke="#5dcaa5" stroke-width="0.8" stroke-dasharray="5 3"/>
-<text x="425" y="260" text-anchor="middle" fill="#5dcaa5" style="fill:rgb(194, 192, 182);font-family:'Anthropic Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;font-size:11px;text-anchor:middle;font-style:italic;">Summarization (3 methods)</text>
+<rect x="292" y="148" width="276" height="92" rx="8" fill="none" stroke="#5dcaa5" stroke-width="1" stroke-dasharray="5 3"/>
+<text x="430" y="262" text-anchor="middle" fill="#047857" style="font-family:'Segoe UI', -apple-system, Arial, sans-serif;font-size:11px;font-weight:500;font-style:italic;">Summarization (3 methods)</text>
 
 <!-- TTS group box (cyan) -->
-<rect x="562" y="148" width="96" height="96" rx="8" fill="none" stroke="#85b7eb" stroke-width="0.8" stroke-dasharray="5 3"/>
-<text x="610" y="260" text-anchor="middle" fill="#85b7eb" style="fill:rgb(194, 192, 182);font-family:'Anthropic Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;font-size:11px;text-anchor:middle;font-style:italic;">TTS</text>
+<rect x="572" y="148" width="90" height="92" rx="8" fill="none" stroke="#85b7eb" stroke-width="1" stroke-dasharray="5 3"/>
+<text x="617" y="262" text-anchor="middle" fill="#0284c7" style="font-family:'Segoe UI', -apple-system, Arial, sans-serif;font-size:11px;font-weight:500;font-style:italic;">TTS</text>
 
 <!-- ── PIPELINE NODES ── -->
 
 <!-- ── Extraction (purple) ── -->
-<g style="font-family:'Anthropic Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;">
-  <rect x="30" y="175" width="70" height="56" rx="6" stroke-width="0.8" style="fill:rgb(80, 40, 90);stroke:rgb(190, 120, 210);stroke-width:0.8px;"/>
-  <text x="65" y="197" text-anchor="middle" dominant-baseline="central" style="fill:rgb(230, 190, 240);font-size:13px;font-weight:500;">Extraction</text>
-  <text x="65" y="213" text-anchor="middle" dominant-baseline="central" style="fill:rgb(190, 120, 210);font-size:10px;font-weight:400;">BS4 / RSS</text>
+<g style="font-family:'Segoe UI', -apple-system, BlinkMacSystemFont, Arial, sans-serif;">
+  <rect x="30" y="170" width="70" height="56" rx="6" stroke-width="1" style="fill:rgb(80, 40, 90);stroke:rgb(190, 120, 210);"/>
+  <text x="65" y="192" text-anchor="middle" dominant-baseline="central" style="fill:rgb(243, 218, 248);font-size:12px;font-weight:600;">Extraction</text>
+  <text x="65" y="209" text-anchor="middle" dominant-baseline="central" style="fill:rgb(216, 180, 254);font-size:10px;font-weight:400;">BS4 / RSS</text>
 </g>
 
 <!-- Extraction → Cleaning arrow -->
-<line x1="100" y1="203" x2="120" y2="203" marker-end="url(#arrow)" stroke="#888780" style="fill:none;stroke-width:1.5px;"/>
+<line x1="100" y1="198" x2="120" y2="198" marker-end="url(#arrow-gray)" stroke="#94A3B8" stroke-width="1.8"/>
 
 <!-- ── Cleaning (purple) ── -->
-<g style="font-family:'Anthropic Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;">
-  <rect x="120" y="175" width="70" height="56" rx="6" stroke-width="0.8" style="fill:rgb(80, 40, 90);stroke:rgb(190, 120, 210);stroke-width:0.8px;"/>
-  <text x="155" y="195" text-anchor="middle" dominant-baseline="central" style="fill:rgb(230, 190, 240);font-size:13px;font-weight:500;">Unicode</text>
-  <text x="155" y="211" text-anchor="middle" dominant-baseline="central" style="fill:rgb(190, 120, 210);font-size:12px;font-weight:400;">Cleaning</text>
+<g style="font-family:'Segoe UI', -apple-system, BlinkMacSystemFont, Arial, sans-serif;">
+  <rect x="120" y="170" width="70" height="56" rx="6" stroke-width="1" style="fill:rgb(80, 40, 90);stroke:rgb(190, 120, 210);"/>
+  <text x="155" y="190" text-anchor="middle" dominant-baseline="central" style="fill:rgb(243, 218, 248);font-size:12px;font-weight:600;">Unicode</text>
+  <text x="155" y="208" text-anchor="middle" dominant-baseline="central" style="fill:rgb(216, 180, 254);font-size:11px;font-weight:400;">Cleaning</text>
 </g>
 
 <!-- Cleaning → Adaptive Router arrow -->
-<line x1="190" y1="203" x2="210" y2="203" marker-end="url(#arrow)" stroke="#888780" style="fill:none;stroke-width:1.5px;"/>
+<line x1="190" y1="198" x2="210" y2="198" marker-end="url(#arrow-gray)" stroke="#94A3B8" stroke-width="1.8"/>
 
 <!-- ── Adaptive Router (yellow) ── -->
-<g style="font-family:'Anthropic Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;">
-  <rect x="210" y="175" width="70" height="56" rx="6" stroke-width="0.8" style="fill:rgb(90, 75, 10);stroke:rgb(220, 195, 80);stroke-width:0.8px;"/>
-  <text x="245" y="195" text-anchor="middle" dominant-baseline="central" style="fill:rgb(250, 235, 170);font-size:13px;font-weight:500;">Adaptive</text>
-  <text x="245" y="211" text-anchor="middle" dominant-baseline="central" style="fill:rgb(220, 195, 80);font-size:12px;font-weight:400;">Router</text>
+<g style="font-family:'Segoe UI', -apple-system, BlinkMacSystemFont, Arial, sans-serif;">
+  <rect x="210" y="170" width="70" height="56" rx="6" stroke-width="1" style="fill:rgb(90, 75, 10);stroke:rgb(220, 195, 80);"/>
+  <text x="245" y="190" text-anchor="middle" dominant-baseline="central" style="fill:rgb(254, 240, 138);font-size:12px;font-weight:600;">Adaptive</text>
+  <text x="245" y="208" text-anchor="middle" dominant-baseline="central" style="fill:rgb(253, 224, 71);font-size:11px;font-weight:400;">Router</text>
 </g>
 
 <!-- Adaptive Router → TF-IDF V2 arrow -->
-<line x1="280" y1="203" x2="300" y2="203" marker-end="url(#arrow)" stroke="#888780" style="fill:none;stroke-width:1.5px;"/>
+<line x1="280" y1="198" x2="300" y2="198" marker-end="url(#arrow-gray)" stroke="#94A3B8" stroke-width="1.8"/>
 
 <!-- Adaptive Router → mT5 Base branch (Overhead) -->
-<path d="M 245 175 L 245 155 L 425 155 L 425 175" fill="none" stroke="#888780" stroke-width="1.5" marker-end="url(#arrow)" style="fill:none;"/>
+<path d="M 245 170 L 245 155 L 412 155 L 412 170" fill="none" stroke="#94A3B8" stroke-width="1.8" marker-end="url(#arrow-gray)"/>
 
 <!-- ── TF-IDF V2 (green) ── -->
-<g style="font-family:'Anthropic Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;">
-  <rect x="300" y="175" width="70" height="56" rx="6" stroke-width="0.8" style="fill:rgb(8, 80, 65);stroke:rgb(93, 202, 165);stroke-width:0.8px;"/>
-  <text x="335" y="195" text-anchor="middle" dominant-baseline="central" style="fill:rgb(159, 225, 203);font-size:13px;font-weight:500;">TF-IDF V2</text>
-  <text x="335" y="211" text-anchor="middle" dominant-baseline="central" style="fill:rgb(93, 202, 165);font-size:10px;font-weight:400;">char n-gram</text>
+<g style="font-family:'Segoe UI', -apple-system, BlinkMacSystemFont, Arial, sans-serif;">
+  <rect x="300" y="170" width="66" height="56" rx="6" stroke-width="1" style="fill:rgb(8, 80, 65);stroke:rgb(93, 202, 165);"/>
+  <text x="333" y="190" text-anchor="middle" dominant-baseline="central" style="fill:rgb(187, 247, 208);font-size:12px;font-weight:600;">TF-IDF V2</text>
+  <text x="333" y="208" text-anchor="middle" dominant-baseline="central" style="fill:rgb(134, 239, 172);font-size:10px;font-weight:400;">char n-gram</text>
 </g>
 
 <!-- ── mT5 Base (green) ── -->
-<g style="font-family:'Anthropic Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;">
-  <rect x="390" y="175" width="70" height="56" rx="6" stroke-width="0.8" style="fill:rgb(8, 80, 65);stroke:rgb(93, 202, 165);stroke-width:0.8px;"/>
-  <text x="425" y="195" text-anchor="middle" dominant-baseline="central" style="fill:rgb(159, 225, 203);font-size:13px;font-weight:500;">mT5 Base</text>
-  <text x="425" y="211" text-anchor="middle" dominant-baseline="central" style="fill:rgb(93, 202, 165);font-size:11px;font-weight:400;">XLSum</text>
+<g style="font-family:'Segoe UI', -apple-system, BlinkMacSystemFont, Arial, sans-serif;">
+  <rect x="378" y="170" width="68" height="56" rx="6" stroke-width="1" style="fill:rgb(8, 80, 65);stroke:rgb(93, 202, 165);"/>
+  <text x="412" y="190" text-anchor="middle" dominant-baseline="central" style="fill:rgb(187, 247, 208);font-size:12px;font-weight:600;">mT5 Base</text>
+  <text x="412" y="208" text-anchor="middle" dominant-baseline="central" style="fill:rgb(134, 239, 172);font-size:11px;font-weight:400;">XLSum</text>
 </g>
 
 <!-- mT5 Base → mT5 Fine-Tuned (dashed optional) -->
-<line x1="460" y1="203" x2="480" y2="203" marker-end="url(#arrow)" stroke="#888780" stroke-dasharray="3 3" style="fill:none;stroke-width:1.2px;"/>
-<text x="470" y="215" text-anchor="middle" style="fill:rgb(180,178,169);font-family:'Anthropic Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;font-size:9px;font-style:italic;">optional</text>
+<line x1="446" y1="198" x2="492" y2="198" marker-end="url(#arrow-gray)" stroke="#94A3B8" stroke-dasharray="3 3" stroke-width="1.5"/>
+<text x="469" y="188" text-anchor="middle" style="fill:#475569;font-family:'Segoe UI', -apple-system, Arial, sans-serif;font-size:8.5px;font-weight:600;font-style:italic;">(optional)</text>
 
 <!-- ── mT5 Fine-Tuned (green) ── -->
-<g style="font-family:'Anthropic Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;">
-  <rect x="480" y="175" width="70" height="56" rx="6" stroke-width="0.8" style="fill:rgb(8, 80, 65);stroke:rgb(93, 202, 165);stroke-width:0.8px;"/>
-  <text x="515" y="195" text-anchor="middle" dominant-baseline="central" style="fill:rgb(159, 225, 203);font-size:13px;font-weight:500;">mT5 Fine</text>
-  <text x="515" y="211" text-anchor="middle" dominant-baseline="central" style="fill:rgb(159, 225, 203);font-size:13px;font-weight:500;">Tuned</text>
+<g style="font-family:'Segoe UI', -apple-system, BlinkMacSystemFont, Arial, sans-serif;">
+  <rect x="492" y="170" width="68" height="56" rx="6" stroke-width="1" style="fill:rgb(8, 80, 65);stroke:rgb(93, 202, 165);"/>
+  <text x="526" y="190" text-anchor="middle" dominant-baseline="central" style="fill:rgb(187, 247, 208);font-size:12px;font-weight:600;">mT5 Fine</text>
+  <text x="526" y="208" text-anchor="middle" dominant-baseline="central" style="fill:rgb(187, 247, 208);font-size:12px;font-weight:600;">Tuned</text>
 </g>
 
 <!-- TF-IDF V2, mT5 Base, and mT5 Fine-Tuned south lines merging to TTS south (underhead) -->
-<path d="M 335 231 L 335 251 L 610 251 L 610 231" fill="none" stroke="#888780" stroke-width="1.5" marker-end="url(#arrow)" style="fill:none;"/>
-<path d="M 425 231 L 425 251" fill="none" stroke="#888780" stroke-width="1.5" style="fill:none;"/>
-<path d="M 515 231 L 515 251" fill="none" stroke="#888780" stroke-width="1.5" style="fill:none;"/>
+<path d="M 333 226 L 333 245 L 617 245 L 617 226" fill="none" stroke="#94A3B8" stroke-width="1.8" marker-end="url(#arrow-gray)"/>
+<path d="M 412 226 L 412 245" fill="none" stroke="#94A3B8" stroke-width="1.8"/>
+<path d="M 526 226 L 526 245" fill="none" stroke="#94A3B8" stroke-width="1.8"/>
 
 <!-- ── Edge TTS (blue) ── -->
-<g style="font-family:'Anthropic Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;">
-  <rect x="570" y="175" width="80" height="56" rx="6" stroke-width="0.8" style="fill:rgb(12, 68, 124);stroke:rgb(133, 183, 235);stroke-width:0.8px;"/>
-  <text x="610" y="193" text-anchor="middle" dominant-baseline="central" style="fill:rgb(181, 212, 244);font-size:13px;font-weight:500;">Edge TTS</text>
-  <text x="610" y="211" text-anchor="middle" dominant-baseline="central" style="fill:rgb(133, 183, 235);font-size:10px;font-weight:400;">te-IN-Shruti</text>
+<g style="font-family:'Segoe UI', -apple-system, BlinkMacSystemFont, Arial, sans-serif;">
+  <rect x="578" y="170" width="78" height="56" rx="6" stroke-width="1" style="fill:rgb(12, 68, 124);stroke:rgb(133, 183, 235);"/>
+  <text x="617" y="190" text-anchor="middle" dominant-baseline="central" style="fill:rgb(186, 230, 253);font-size:12px;font-weight:600;">Edge TTS</text>
+  <text x="617" y="208" text-anchor="middle" dominant-baseline="central" style="fill:rgb(125, 211, 252);font-size:10px;font-weight:400;">te-IN-Shruti</text>
 </g>
 
 <!-- FastAPI dispatch arrow down-left to Cleaning (L-bend) -->
-<path d="M 320 94 L 320 110 L 155 110 L 155 175" fill="none" stroke="#BA7517" stroke-width="1" marker-end="url(#arrow)" stroke-dasharray="4 2" style="fill:none;stroke-width:1px;"/>
+<path d="M 320 94 L 320 115 L 155 115 L 155 170" fill="none" stroke="#F59E0B" stroke-width="2" marker-end="url(#arrow-amber)" stroke-dasharray="5 3"/>
 
 <!-- TTS return arrow up to FastAPI (L-bend right side) -->
-<path d="M 610 175 L 610 110 L 400 110 L 400 94" fill="none" stroke="#378ADD" stroke-width="1" marker-end="url(#arrow)" stroke-dasharray="4 2" style="fill:none;stroke-width:1px;"/>
+<path d="M 617 170 L 617 115 L 400 115 L 400 94" fill="none" stroke="#38BDF8" stroke-width="2" marker-end="url(#arrow-blue)" stroke-dasharray="5 3"/>
 
 </svg>
